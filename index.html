@@ -145,7 +145,6 @@
         let hiyerarsi = {}; 
         let aktifBoy = "";
 
-        // ÇERKES SÜLALE VE BOY VERİ TABANI
         const sulaleVeritabani = {
             "jajiy": "Abzeh", "jaje": "Abzeh", "jajıy": "Abzeh", "abrec": "Abzeh", "apishe": "Abzeh", "apiş": "Abzeh", "baste": "Abzeh", "begug": "Abzeh", "beğuş": "Abzeh", "blegaj": "Abzeh", "bleğoj": "Abzeh", "bırç": "Abzeh", "carım": "Abzeh", "çetaw": "Abzeh", "çetıj": "Abzeh", "dzıbe": "Abzeh", "guşe": "Abzeh", "guşev": "Abzeh", "hağur": "Abzeh", "hajuk": "Abzeh", "hajuko": "Abzeh", "hakon": "Abzeh", "hak'un": "Abzeh", "hapaç": "Abzeh", "hapay": "Abzeh", "hatoh": "Abzeh", "huaj": "Abzeh", "huşt": "Abzeh", "jançat": "Abzeh", "janket": "Abzeh", "kobl": "Abzeh", "kobli": "Abzeh", "kuade": "Abzeh", "huade": "Abzeh", "mamıy": "Abzeh", "mışe": "Abzeh", "natho": "Abzeh", "nepsaw": "Abzeh", "nepsıw": "Abzeh", "neğuç": "Abzeh", "pşçev": "Abzeh", "şhalaho": "Abzeh", "şhaho": "Abzeh", "şowmen": "Abzeh", "şevmen": "Abzeh", "tleyus": "Abzeh", "tleçeruk": "Abzeh", "tsey": "Abzeh", "tharkaho": "Abzeh", "tharkuako": "Abzeh", "wunafe": "Abzeh", "yegüç": "Abzeh", "yemıj": "Abzeh",
             
@@ -163,7 +162,6 @@
             "berzeg": "Ubıh", "dzenış": "Ubıh", "küçba": "Ubıh", "l'ah": "Ubıh", "tsan": "Ubıh", "tğamey": "Ubıh", "vorak": "Ubıh", "zorz": "Ubıh"
         };
 
-        // REHBER İÇERİĞİ
         const rehberData = {
             "Abzeh": ["Jajiy / Jaje / Jajıy", "Abrec", "Apishe / Apiş", "Baste", "Begug / Beğuş", "Blegaj / Bleğoj", "Bırç", "Carım", "Çetaw / Çetıj", "Dzıbe", "Guşe / Guşev", "Hağur", "Hajuk / Hajuko", "Hakon / Hak'un", "Hapaç / Hapay", "Hatoh", "Huaj / Huşt", "Jançat / Janket", "Kobl / Kobli", "Kuade / Huade", "Mamıy", "Mışe", "Natho", "Nepsaw / Nepsıw", "Neğuç", "Pşçev", "Şhalaho", "Şhaho", "Şowmen / Şevmen", "Tleyus", "Tleçeruk", "Tsey", "Tharkaho / Tharkuako", "Wunafe", "Yegüç", "Yemıj"],
             "Şapsığ & Natuhay": ["Jade / Jad", "Acemıy / Açoh", "Açumıj", "Asker", "Batır", "Çanta", "Çundışsh", "Guco", "Guğoj", "Hath", "Hatuh", "Hun / Hunağu", "Kuaş / Kuace", "Kuacu", "Mıjo", "Naç", "Nemıtıkъo", "Pşemat", "Pşıwıj / Pşızıy", "Qat", "Ser'uşe", "Sıyuh", "Şevcuh", "Şhağ", "Şhagumış", "Şhapatlok / Shhaptleko", "T'ah / T'aho", "T'ığo", "Tsey", "Yeğoşu", "Zazı"],
@@ -306,7 +304,16 @@
         }
         function rehberAc() { document.getElementById('rehberModal').classList.add('active'); }
 
+        // KİŞİ BULMA YARDIMCI FONKSİYONU (Hata payını sıfırlar)
+        function kisiBul(isim) {
+            if(!isim) return null;
+            const aranan = isim.trim().toLowerCase();
+            return tumVeriler.find(k => (k['AdSoyad'] || '').trim().toLowerCase() === aranan);
+        }
+
         function modalAc(kisi) {
+            if (!kisi) return; // Eğer kişi bulunamazsa hata vermesini engelle
+
             document.getElementById('modalIsim').innerText = kisi['AdSoyad'] || 'İsimsiz';
             document.getElementById('modalSulale').innerText = `${kisi['Boy'] || 'Diğer'} / ${kisi['Sülale'] || '-'}`;
             
@@ -357,7 +364,8 @@
                     return kAd.includes(babaAdi) && kSulale === kisiSulale && k !== kisi;
                 });
                 if (baba) {
-                    ebeveynHtml += `<li>Babası: <span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${baba['AdSoyad']}')))">${baba['AdSoyad']}</span></li>`;
+                    // Tıklama hatasını çözen düzeltilmiş kısım:
+                    ebeveynHtml += `<li>Babası: <span class="clickable-name" onclick="modalAc(kisiBul('${baba['AdSoyad'].replace(/'/g, "\\'")}'))">${baba['AdSoyad']}</span></li>`;
                 } else {
                      ebeveynHtml += `<li>Babası: ${kisi['BabaAdi']} (Kayıtlı değil)</li>`;
                 }
@@ -372,7 +380,7 @@
                     return kAd.includes(anneAdi) && kSulale === arananSulale && k !== kisi;
                 });
                 if (anne) {
-                    ebeveynHtml += `<li>Annesi: <span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${anne['AdSoyad']}')))">${anne['AdSoyad']}</span></li>`;
+                    ebeveynHtml += `<li>Annesi: <span class="clickable-name" onclick="modalAc(kisiBul('${anne['AdSoyad'].replace(/'/g, "\\'")}'))">${anne['AdSoyad']}</span></li>`;
                 } else {
                      ebeveynHtml += `<li>Annesi: ${kisi['AnneAdi']} (Kayıtlı değil)</li>`;
                 }
@@ -390,7 +398,8 @@
             if (cocuklar.length > 0) {
                 let cocukHtml = `<div class="tree-title">Aşağı Soy (Evlatlar)</div><ul class="tree-list">`;
                 cocuklar.forEach(cocuk => {
-                    cocukHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${cocuk['AdSoyad']}')))">${cocuk['AdSoyad']}</span></li>`;
+                    // Tıklama hatasını çözen düzeltilmiş kısım:
+                    cocukHtml += `<li><span class="clickable-name" onclick="modalAc(kisiBul('${cocuk['AdSoyad'].replace(/'/g, "\\'")}'))">${cocuk['AdSoyad']}</span></li>`;
                 });
                 cocukHtml += `</ul>`;
                 agacHtml += cocukHtml;
@@ -408,7 +417,8 @@
                 if (kardesler.length > 0) {
                     let kardesHtml = `<div class="tree-title">Kardeşleri</div><ul class="tree-list">`;
                     kardesler.forEach(kardes => {
-                        kardesHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${kardes['AdSoyad']}')))">${kardes['AdSoyad']}</span></li>`;
+                        // Tıklama hatasını çözen düzeltilmiş kısım:
+                        kardesHtml += `<li><span class="clickable-name" onclick="modalAc(kisiBul('${kardes['AdSoyad'].replace(/'/g, "\\'")}'))">${kardes['AdSoyad']}</span></li>`;
                     });
                     kardesHtml += `</ul>`;
                     agacHtml += kardesHtml;
