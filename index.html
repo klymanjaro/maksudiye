@@ -44,6 +44,9 @@
         .back-btn { display: inline-block; margin-bottom: 20px; color: var(--gold); text-decoration: none; font-weight: 600; cursor: pointer; }
         .back-btn:hover { color: #fff; }
 
+        .btn-rehber { display: inline-block; margin-top: 15px; background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 10px 20px; border-radius: 6px; text-decoration: none; cursor: pointer; transition: 0.3s; font-family: 'Cinzel', serif; }
+        .btn-rehber:hover { background: var(--gold); color: #000; }
+
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background-color: var(--panel-bg); width: 90%; max-width: 600px; padding: 30px; border-radius: 12px; border: 1px solid var(--gold); position: relative; max-height: 90vh; overflow-y: auto; }
@@ -64,6 +67,11 @@
         .extra-info { margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.05); border-radius: 6px; border-left: 3px solid var(--gold); }
         .extra-info strong { color: var(--gold); display: block; font-size: 0.85rem; margin-bottom: 5px; text-transform: uppercase; }
 
+        /* Rehber Modalı İçin Özel Stiller */
+        .guide-tribe { margin-bottom: 20px; }
+        .guide-tribe h3 { color: var(--gold); font-family: 'Cinzel', serif; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-bottom: 10px; }
+        .guide-clans { font-size: 0.9rem; color: var(--text-muted); line-height: 1.8; }
+
         @media (max-width: 600px) { header h1 { font-size: 2rem; } .modal-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -79,6 +87,7 @@
             <div class="history-box">
                 <h2>Köyün Hafızası</h2>
                 <p>Bu dijital arşiv, atalarımızdan bugüne uzanan soy bağlarını kayıt altına almak için hazırlandı. Bir isme tıklayarak onun ebeveynlerini, çocuklarını ve kardeşlerini görebilirsiniz.</p>
+                <button class="btn-rehber" onclick="rehberAc()">📖 Tüm Çerkes Sülaleleri Rehberi</button>
             </div>
             <h2 class="section-title">Köyümüzdeki Boylar</h2>
             <div id="boy-listesi" class="grid"></div>
@@ -97,9 +106,10 @@
         </div>
     </div>
 
+    <!-- Kişi Detay Penceresi -->
     <div class="modal-overlay" id="detayModal">
         <div class="modal-content">
-            <span class="close-btn" onclick="kapatModal()">&times;</span>
+            <span class="close-btn" onclick="kapatModal('detayModal')">&times;</span>
             <h2 id="modalIsim">İsim</h2>
             
             <div class="modal-grid">
@@ -121,12 +131,51 @@
         </div>
     </div>
 
+    <!-- Sülale Rehberi Penceresi -->
+    <div class="modal-overlay" id="rehberModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="kapatModal('rehberModal')">&times;</span>
+            <h2>Çerkes Sülaleleri Rehberi</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Kafkasya ve diaspora kayıtlarında tescilli köklü aile adları.</p>
+            <div id="rehberIcerik"></div>
+        </div>
+    </div>
+
     <script>
         const CSV_URL = "https://docs.google.com/spreadsheets/d/104r7BF560IMgrIeFXH_l2f8L2LR3DrV3CuRx2uMXLXQ/export?format=csv";
         
         let tumVeriler = [];
         let hiyerarsi = {}; 
         let aktifBoy = "";
+
+        // --- ÇERKES SÜLALE VE BOY VERİ TABANI (Senin Gönderdiğin Liste) ---
+        const sulaleVeritabani = {
+            // ABZEH
+            "jajiy": "Abzeh", "jaje": "Abzeh", "jajıy": "Abzeh", "abrec": "Abzeh", "apishe": "Abzeh", "apiş": "Abzeh", "baste": "Abzeh", "begug": "Abzeh", "beğuş": "Abzeh", "blegaj": "Abzeh", "bleğoj": "Abzeh", "bırç": "Abzeh", "carım": "Abzeh", "çetaw": "Abzeh", "çetıj": "Abzeh", "dzıbe": "Abzeh", "guşe": "Abzeh", "guşev": "Abzeh", "hağur": "Abzeh", "hajuk": "Abzeh", "hajuko": "Abzeh", "hakon": "Abzeh", "hak'un": "Abzeh", "hapaç": "Abzeh", "hapay": "Abzeh", "hatoh": "Abzeh", "huaj": "Abzeh", "huşt": "Abzeh", "jançat": "Abzeh", "janket": "Abzeh", "kobl": "Abzeh", "kobli": "Abzeh", "kuade": "Abzeh", "huade": "Abzeh", "mamıy": "Abzeh", "mışe": "Abzeh", "natho": "Abzeh", "nepsaw": "Abzeh", "nepsıw": "Abzeh", "neğuç": "Abzeh", "pşçev": "Abzeh", "şhalaho": "Abzeh", "şhaho": "Abzeh", "şowmen": "Abzeh", "şevmen": "Abzeh", "tleyus": "Abzeh", "tleçeruk": "Abzeh", "tsey": "Abzeh", "tharkaho": "Abzeh", "tharkuako": "Abzeh", "wunafe": "Abzeh", "yegüç": "Abzeh", "yemıj": "Abzeh",
+            // ŞAPSIĞ & NATUHAY
+            "acemıy": "Şapsığ", "açoh": "Şapsığ", "açumıj": "Şapsığ", "asker": "Şapsığ", "batır": "Şapsığ", "çanta": "Şapsığ", "çundışsh": "Şapsığ", "guco": "Şapsığ", "guğoj": "Şapsığ", "hath": "Şapsığ", "hatuh": "Şapsığ", "hun": "Şapsığ", "hunağu": "Şapsığ", "kuaş": "Şapsığ", "kuace": "Şapsığ", "kuacu": "Şapsığ", "mıjo": "Şapsığ", "naç": "Şapsığ", "nemıtıkъo": "Şapsığ", "pşemat": "Şapsığ", "pşıwıj": "Şapsığ", "pşızıy": "Şapsığ", "qat": "Şapsığ", "ser'uşe": "Şapsığ", "sıyuh": "Şapsığ", "şevcuh": "Şapsığ", "şhağ": "Şapsığ", "şhagumış": "Şapsığ", "şhapatlok": "Şapsığ", "shhaptleko": "Şapsığ", "t'ah": "Şapsığ", "t'aho": "Şapsığ", "t'ığo": "Şapsığ", "yeğoşu": "Şapsığ", "zazı": "Şapsığ", // Natuhay'da aynı sülaleler var, genelde ortak kullanılır
+            // KABARDEY & BESLENEY
+            "ahmat": "Kabardey", "alhas": "Kabardey", "anzor": "Kabardey", "appa": "Kabardey", "astemir": "Kabardey", "atacukin": "Kabardey", "beçmirze": "Kabardey", "bekaldı": "Kabardey", "bekul": "Kabardey", "besleney": "Besleney", "bora": "Kabardey", "duman": "Kabardey", "dumen": "Kabardey", "gedgafo": "Kabardey", "gedğox": "Kabardey", "jamberti": "Kabardey", "jamirze": "Kabardey", "kardan": "Kabardey", "qarden": "Kabardey", "kardanok": "Kabardey", "kanoko": "Kabardey", "kanşo": "Kabardey", "keref": "Kabardey", "koyşeba": "Kabardey", "kudnet": "Kabardey", "hakuş": "Kabardey", "lığur": "Kabardey", "lığaje": "Kabardey", "nehuş": "Kabardey", "neğuko": "Kabardey", "şerel": "Kabardey", "şogen": "Kabardey", "tabulov": "Kabardey", "tambay": "Kabardey", "tambiy": "Kabardey", "tılp": "Kabardey", "tlış": "Kabardey", "yınal": "Kabardey", "yinuk": "Kabardey", "zerışte": "Kabardey",
+            // BJEDUĞ & ÇEMGUY
+            "bıj": "Bjeduğ", "boğ": "Bjeduğ", "ceçrıqoe": "Bjeduğ", "çemguy": "Çemguy", "çerçenay": "Çemguy", "day": "Bjeduğ", "degujınuko": "Bjeduğ", "devlet": "Bjeduğ", "hadagable": "Bjeduğ", "hakura": "Bjeduğ", "hantsev": "Bjeduğ", "hatuy": "Bjeduğ", "hazeğ": "Bjeduğ", "ibak": "Bjeduğ", "kanuko": "Bjeduğ", "l'ışşe": "Bjeduğ", "l'up": "Bjeduğ", "negoş": "Bjeduğ", "negoy": "Bjeduğ", "qase": "Bjeduğ", "tırkuş": "Bjeduğ", "tlehuç": "Bjeduğ", "yeceruqoe": "Bjeduğ", "zera": "Bjeduğ", "zevg": "Bjeduğ",
+            // HATUKAY, MAMHEG, YEGERUKAY, JANEY
+            "baş": "Hatukay", "çınah": "Hatukay", "hako": "Hatukay", "hatukay": "Hatukay", "şerkes": "Hatukay", "tlepl": "Hatukay", 
+            "kose": "Mamheg", "mamheg": "Mamheg",
+            "yegerukay": "Yegerukay",
+            "ashin": "Janey", "janey": "Janey", "kanok": "Janey", "kartoş": "Janey",
+            // UBİH
+            "berzeg": "Ubıh", "dzenış": "Ubıh", "küçba": "Ubıh", "l'ah": "Ubıh", "tsan": "Ubıh", "tğamey": "Ubıh", "vorak": "Ubıh", "zorz": "Ubıh"
+        };
+
+        // Rehber İçeriğini Oluşturmak İçin
+        const rehberData = {
+            "Abzeh": ["Jajiy / Jaje / Jajıy", "Abrec", "Apishe / Apiş", "Baste", "Begug / Beğuş", "Blegaj / Bleğoj", "Bırç", "Carım", "Çetaw / Çetıj", "Dzıbe", "Guşe / Guşev", "Hağur", "Hajuk / Hajuko", "Hakon / Hak'un", "Hapaç / Hapay", "Hatoh", "Huaj / Huşt", "Jançat / Janket", "Kobl / Kobli", "Kuade / Huade", "Mamıy", "Mışe", "Natho", "Nepsaw / Nepsıw", "Neğuç", "Pşçev", "Şhalaho", "Şhaho", "Şowmen / Şevmen", "Tleyus", "Tleçeruk", "Tsey", "Tharkaho / Tharkuako", "Wunafe", "Yegüç", "Yemıj"],
+            "Şapsığ & Natuhay": ["Acemıy / Açoh", "Açumıj", "Asker", "Batır", "Çanta", "Çundışsh", "Guco", "Guğoj", "Hath", "Hatuh", "Hun / Hunağu", "Kuaş / Kuace", "Kuacu", "Mıjo", "Naç", "Nemıtıkъo", "Pşemat", "Pşıwıj / Pşızıy", "Qat", "Ser'uşe", "Sıyuh", "Şevcuh", "Şhağ", "Şhagumış", "Şhapatlok / Shhaptleko", "T'ah / T'aho", "T'ığo", "Tsey", "Yeğoşu", "Zazı"],
+            "Kabardey & Besleney": ["Ahmat", "Alhas", "Anzor", "Appa", "Astemir", "Atacukin", "Beçmirze", "Bekaldı / Bekul", "Besleney", "Bora", "Duman / Dumen", "Gedgafo / Gedğox", "Jamberti / Jamirze", "Kardan / Qarden", "Kardanok", "Kanoko", "Kanşo", "Keref", "Koyşeba", "Kudnet", "Hakuş", "Lığur / Lığaje", "Nehuş / Neğuko", "Şerel", "Şogen", "Tabulov", "Tambay / Tambiy", "Tılp", "Tlış", "Yınal / Yinuk", "Zerışte"],
+            "Bjeduğ & Çemguy": ["Bıj", "Boğ", "Ceçrıqoe", "Çemguy", "Çerçenay", "Day", "Degujınuko", "Devlet", "Hadagable", "Hakura", "Hantsev", "Hatuy", "Hazeğ", "Ibak", "Kanuko", "L'ışşe / L'up", "Negoş / Negoy", "Qase", "Şevcuh", "Şhaho", "Tırkuş", "Tlehuç", "Yeceruqoe", "Zera", "Zevg"],
+            "Hatukay, Mamheg, Yegerukay, Janey": ["Hatukay: Baş, Çınah, Hako, Hatukay, Şerkes, Tlepl, Yemıj", "Mamheg: Bıj, Hakuş, Kose, Mamheg, Tlehuç", "Yegerukay: Bırç, Hantsev, Kanuko, Yegerukay", "Janey: Ashin, Janey, Kanok, Kartoş"],
+            "Ubıh": ["Berzeg", "Dzenış", "Küçba", "L'ah", "Tsan", "Tğamey", "Vorak", "Zorz"]
+        };
 
         function parseCSV(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line);
@@ -155,6 +204,7 @@
                 tumVeriler = parseCSV(csvText);
                 verileriIsle();
                 boylariListele();
+                rehberiDoldur(); // Rehberi hazırla
             } catch (error) {
                 document.getElementById('boy-listesi').innerHTML = "<p>Veriler yüklenirken hata oluştu.</p>";
             }
@@ -163,9 +213,17 @@
         function verileriIsle() {
             hiyerarsi = {};
             tumVeriler.forEach(kisi => {
-                let boyAdi = (kisi['Boy'] && kisi['Boy'].trim() !== '') ? kisi['Boy'].trim() : 'Diğer';
                 let sulaleAdi = (kisi['Sülale'] && kisi['Sülale'].trim() !== '') ? kisi['Sülale'].trim() : 'Sülale Belirtilmemiş';
-                
+                let boyAdi = (kisi['Boy'] && kisi['Boy'].trim() !== '') ? kisi['Boy'].trim() : '';
+
+                // AKILLI EŞLEŞTİRME: Eğer Boy boşsa veya yanlışsa, Sülale veritabanından bul
+                const arananSulale = sulaleAdi.toLowerCase();
+                if (sulaleVeritabani[arananSulale]) {
+                    boyAdi = sulaleVeritabani[arananSulale]; // Sistem sülaleyi tanıdı ve boyunu atadı
+                }
+
+                if (boyAdi === '') boyAdi = 'Diğer'; // Hiçbir yerde yoksa
+
                 boyAdi = boyAdi.charAt(0).toUpperCase() + boyAdi.slice(1).toLowerCase();
                 sulaleAdi = sulaleAdi.charAt(0).toUpperCase() + sulaleAdi.slice(1).toLowerCase();
 
@@ -223,7 +281,6 @@
                 kart.className = 'card';
                 const baba = kisi['BabaAdi'] ? `<div class="card-subtitle">Baba: ${kisi['BabaAdi']}</div>` : '';
                 
-                // Liste kartında doğum-ölüm yılını göster
                 let yilText = kisi['DogumYili'] || '';
                 if (kisi['OlumYili']) { yilText += ` - ${kisi['OlumYili']}`; }
                 const yilHtml = yilText ? `<div class="card-subtitle">${yilText}</div>` : '';
@@ -242,12 +299,24 @@
             window.scrollTo(0, 0);
         }
 
+        // --- REHBER MODALI ---
+        function rehberiDoldur() {
+            const kapsayici = document.getElementById('rehberIcerik');
+            kapsayici.innerHTML = '';
+            for (const [boy, sulaleler] of Object.entries(rehberData)) {
+                const div = document.createElement('div');
+                div.className = 'guide-tribe';
+                div.innerHTML = `<h3>${boy}</h3><div class="guide-clans">${sulaleler.join(', ')}</div>`;
+                kapsayici.appendChild(div);
+            }
+        }
+        function rehberAc() { document.getElementById('rehberModal').classList.add('active'); }
+
         // --- AKILLI AKRABALIK VE SOY AĞACI MOTORU ---
         function modalAc(kisi) {
             document.getElementById('modalIsim').innerText = kisi['AdSoyad'] || 'İsimsiz';
             document.getElementById('modalSulale').innerText = `${kisi['Boy'] || 'Diğer'} / ${kisi['Sülale'] || '-'}`;
             
-            // Yaşam Süresi Mantığı (Doğum ve Ölüm Yılı)
             let yasamSuresi = "-";
             if (kisi['DogumYili'] && kisi['OlumYili']) {
                 yasamSuresi = `${kisi['DogumYili']} - ${kisi['OlumYili']}`;
@@ -258,7 +327,6 @@
             }
             document.getElementById('modalYil').innerText = yasamSuresi;
             
-            // Hikaye Kontrolü
             const hikaye = kisi['Hikaye'] || kisi['Bilgi'];
             if (hikaye) {
                 document.getElementById('modalHikaye').innerText = hikaye;
@@ -267,7 +335,6 @@
                 document.getElementById('hikayeAlani').style.display = 'none';
             }
 
-            // Özel Akrabalık Kontrolü
             const ozelAkraba = kisi['OzelAkrabalik'] || kisi['Akrabalik'];
             if (ozelAkraba) {
                 document.getElementById('modalOzelAkrabalik').innerText = ozelAkraba;
@@ -288,7 +355,6 @@
 
             let agacHtml = '';
 
-            // 1. EBEVEYNLERİ BUL
             let ebeveynHtml = `<div class="tree-title">Yukarı Soy (Ebeveynler)</div><ul class="tree-list">`;
             let ebeveynVar = false;
 
@@ -323,7 +389,6 @@
             ebeveynHtml += `</ul>`;
             if(ebeveynVar) agacHtml += ebeveynHtml;
 
-            // 2. ÇOCUKLARI BUL
             const cocuklar = tumVeriler.filter(k => {
                 const kBabaAd = (k['BabaAdi'] || '').trim().toLowerCase();
                 const kAnneAd = (k['AnneAdi'] || '').trim().toLowerCase();
@@ -339,15 +404,12 @@
                 agacHtml += cocukHtml;
             }
 
-            // 3. KARDEŞLERİ BUL
             if (babaAdi !== "" || anneAdi !== "") {
                 const kardesler = tumVeriler.filter(k => {
                     const kBabaAd = (k['BabaAdi'] || '').trim().toLowerCase();
                     const kAnneAd = (k['AnneAdi'] || '').trim().toLowerCase();
-                    
                     const ayniBaba = babaAdi !== "" && kBabaAd === babaAdi;
                     const ayniAnne = anneAdi !== "" && kAnneAd === anneAdi;
-                    
                     return (ayniBaba || ayniAnne) && k !== kisi;
                 });
                 
@@ -370,8 +432,11 @@
             document.getElementById('detayModal').classList.add('active');
         }
 
-        function kapatModal() { document.getElementById('detayModal').classList.remove('active'); }
-        document.getElementById('detayModal').addEventListener('click', function(e) { if (e.target === this) kapatModal(); });
+        function kapatModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+        
+        document.getElementById('detayModal').addEventListener('click', function(e) { if (e.target === this) kapatModal('detayModal'); });
+        document.getElementById('rehberModal').addEventListener('click', function(e) { if (e.target === this) kapatModal('rehberModal'); });
+
         window.onload = verileriYukle;
     </script>
 </body>
