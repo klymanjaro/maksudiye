@@ -3,90 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maksudiye Köyü | Çerkes Tarihi ve Sülaleler</title>
+    <title>Maksudiye Köyü | Soy Ağacı</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #0f1714;
-            --panel-bg: #1a2823;
-            --gold: #d4af37;
-            --gold-hover: #f1c40f;
-            --text-main: #e0e0e0;
-            --text-muted: #9ba8a3;
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --bg-color: #0f1714; --panel-bg: #1a2823; --gold: #d4af37;
+            --text-main: #e0e0e0; --text-muted: #9ba8a3;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        header {
-            text-align: center;
-            padding: 60px 20px 40px;
-            border-bottom: 2px solid var(--gold);
-            background: linear-gradient(rgba(15, 23, 20, 0.8), rgba(15, 23, 20, 0.95));
-        }
-
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        
+        header { text-align: center; padding: 60px 20px 40px; border-bottom: 2px solid var(--gold); background: linear-gradient(rgba(15, 23, 20, 0.8), rgba(15, 23, 20, 0.95)); }
         header h1 { font-family: 'Cinzel', serif; font-size: 3rem; color: var(--gold); letter-spacing: 4px; margin-bottom: 10px; text-transform: uppercase; }
         header p { font-size: 1.1rem; color: var(--text-muted); font-style: italic; }
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
 
-        /* Sayfa Geçişleri */
         .page-section { display: none; animation: fadeIn 0.4s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Ana Sayfa Bölümleri */
-        .history-box { background-color: var(--panel-bg); border-left: 5px solid var(--gold); border-radius: 8px; padding: 30px; margin-bottom: 40px; box-shadow: var(--card-shadow); }
+        .history-box { background-color: var(--panel-bg); border-left: 5px solid var(--gold); border-radius: 8px; padding: 30px; margin-bottom: 40px; }
         .history-box h2 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 15px; font-size: 1.6rem; }
+        
         .stats-row { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
         .stat-box { flex: 1; min-width: 200px; background-color: var(--panel-bg); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; padding: 20px; text-align: center; }
         .stat-box h3 { font-size: 1rem; color: var(--text-muted); font-weight: 400; margin-bottom: 10px; }
         .stat-box .number { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold); line-height: 1; }
+        
         .section-title { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.8rem; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .section-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
-        /* Kart Tasarımı */
         .card { background-color: var(--panel-bg); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s ease; position: relative; }
-        .card:hover { transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
         .card-title { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 5px; text-transform: uppercase; }
         .card-subtitle { font-size: 0.9rem; color: var(--text-muted); }
-        .card-subtitle.highlight { color: var(--text-main); margin-top: 10px; font-weight: 500; }
         .card-arrow { position: absolute; bottom: 20px; right: 20px; color: var(--gold); font-size: 1.2rem; }
-
-        /* Geri Butonu */
-        .back-btn { display: inline-block; margin-bottom: 20px; color: var(--gold); text-decoration: none; font-weight: 600; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .back-btn { display: inline-block; margin-bottom: 20px; color: var(--gold); text-decoration: none; font-weight: 600; cursor: pointer; }
         .back-btn:hover { color: #fff; }
 
         /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background-color: var(--panel-bg); width: 90%; max-width: 550px; padding: 30px; border-radius: 12px; border: 1px solid var(--gold); position: relative; transform: translateY(20px); transition: transform 0.3s ease; max-height: 90vh; overflow-y: auto; }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-content { background-color: var(--panel-bg); width: 90%; max-width: 600px; padding: 30px; border-radius: 12px; border: 1px solid var(--gold); position: relative; max-height: 90vh; overflow-y: auto; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: var(--text-muted); cursor: pointer; }
         .close-btn:hover { color: var(--gold); }
         .modal-content h2 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 20px; font-size: 1.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
 
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .modal-item strong { color: var(--text-muted); display: block; font-size: 0.8rem; text-transform: uppercase; }
-        .modal-item span { font-size: 1.05rem; font-weight: 600; }
         
-        /* Akrabalık ve Hikaye Kutuları */
-        .info-section-title { font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; gap: 5px;}
-        .family-tree-box { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 175, 55, 0.3); padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 0.95rem; }
-        .clickable-relative { color: var(--gold); text-decoration: underline; cursor: pointer; font-weight: bold; }
-        .clickable-relative:hover { color: #fff; }
-        .modal-story { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold); padding: 15px; border-radius: 0 6px 6px 0; font-style: italic; color: #dcdcdc; margin-bottom: 15px; }
-        .modal-akrabalik { background: rgba(255, 255, 255, 0.05); border: 1px dashed var(--text-muted); padding: 15px; border-radius: 6px; font-size: 0.95rem; }
+        /* Akrabalık Ağacı Görünümü */
+        .family-tree-section { margin-top: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px dashed rgba(212, 175, 55, 0.4); }
+        .tree-title { color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.1rem; }
+        .tree-list { list-style: none; padding-left: 15px; border-left: 2px solid rgba(212,175,55,0.3); margin-bottom: 15px; }
+        .tree-list li { margin-bottom: 8px; font-size: 0.95rem; }
+        .clickable-name { color: var(--gold); cursor: pointer; font-weight: bold; text-decoration: underline; }
+        .clickable-name:hover { color: #fff; }
 
         @media (max-width: 600px) { header h1 { font-size: 2rem; } .modal-grid { grid-template-columns: 1fr; } }
     </style>
@@ -95,34 +70,24 @@
 
     <header>
         <h1>Maksudiye Köyü</h1>
-        <p>1864'ten Bugüne Boylarımız, Sülalelerimiz ve Hikayelerimiz</p>
+        <p>1864'ten Bugüne Soy Ağacımız</p>
     </header>
 
     <div class="container">
-        
-        <!-- 1. ANA SAYFA (12 BOY) -->
+        <!-- 1. ANA SAYFA (Boylar) -->
         <div id="ana-sayfa" class="page-section active">
             <div class="history-box">
                 <h2>Köyün Hafızası</h2>
-                <p>1864 yılında Kafkasya'dan zorunlu göçle ayrılan atalarımız, Karadeniz'in öte yakasında yeni bir hayat kurdu. Bu dijital arşiv; hangi boya mensup olduğumuzu, sülalelerimizi ve köyümüzün ortak hafızasını gelecek nesillere aktarmak için hazırlandı.</p>
+                <p>Bu dijital arşiv, atalarımızdan bugüne uzanan soy bağlarını kayıt altına almak için hazırlandı. Bir isme tıklayarak onun babasını, çocuklarını ve kardeşlerini görebilirsiniz. Sistem, isim benzerliklerini ve sülale bağlarını kullanarak akrabalık ağını otomatik çıkarır.</p>
             </div>
-
-            <div class="stats-row">
-                <div class="stat-box"><h3>Kayıtlı Kişi</h3><div class="number" id="stat-kisi">0</div></div>
-                <div class="stat-box"><h3>Sülale</h3><div class="number" id="stat-sulale">0</div></div>
-                <div class="stat-box"><h3>Boy (Köyde)</h3><div class="number" id="stat-boy">0</div></div>
-            </div>
-
             <h2 class="section-title">Köyümüzdeki Çerkes Boyları</h2>
-            <p class="section-desc">Sülaleleri ve kişileri görmek için bir boy seçin.</p>
             <div id="boy-listesi" class="grid"></div>
         </div>
 
         <!-- 2. BOY İÇİ SAYFASI (Sülaleler) -->
         <div id="boy-sayfasi" class="page-section">
-            <a class="back-btn" onclick="sayfaDegistir('ana-sayfa')">← Ana Sayfaya (Boylara) Dön</a>
+            <a class="back-btn" onclick="sayfaDegistir('ana-sayfa')">← Boylara Dön</a>
             <h2 class="section-title" id="secilen-boy-baslik">Boy Adı</h2>
-            <p class="section-desc">Bu boya mensup sülaleler listeleniyor.</p>
             <div id="boyun-sulaleleri" class="grid"></div>
         </div>
 
@@ -130,41 +95,28 @@
         <div id="sulale-sayfasi" class="page-section">
             <a class="back-btn" onclick="geriDonBoy()">← Sülalelere Dön</a>
             <h2 class="section-title" id="secilen-sulale-baslik">Sülale Adı</h2>
-            <p class="section-desc" id="sulale-aciklama">Bu sülaleye mensup kişiler listeleniyor.</p>
             <div id="kisi-listesi" class="grid"></div>
         </div>
-
     </div>
 
-    <!-- Kişi Detay Penceresi (Modal) -->
+    <!-- Kişi Detay Penceresi -->
     <div class="modal-overlay" id="detayModal">
         <div class="modal-content">
             <span class="close-btn" onclick="kapatModal()">&times;</span>
             <h2 id="modalIsim">İsim</h2>
             
             <div class="modal-grid">
-                <div class="modal-item"><strong>Boy</strong> <span id="modalBoy">-</span></div>
-                <div class="modal-item"><strong>Sülale</strong> <span id="modalSulale">-</span></div>
-                <div class="modal-item"><strong>Baba Adı</strong> <span id="modalBaba">-</span></div>
+                <div class="modal-item"><strong>Boy / Sülale</strong> <span id="modalSulale">-</span></div>
                 <div class="modal-item"><strong>Doğum Yılı</strong> <span id="modalYil">-</span></div>
-                <div class="modal-item"><strong>Doğum Yeri</strong> <span id="modalYer">-</span></div>
             </div>
 
-            <!-- OTOMATİK SOY BAĞI (BABA/DEDE) -->
-            <div class="info-section-title">🌳 Soy Bağı</div>
-            <div class="family-tree-box" id="modalSoyBagi">
-                Bilgi hesaplanıyor...
+            <!-- OTOMATİK SOY AĞACI -->
+            <div class="family-tree-section" id="soyAgaciAlani">
+                <!-- JavaScript ile doldurulacak -->
             </div>
 
-            <!-- MANUEL AKRABALIK NOTLARI (Sheets'ten Gelen) -->
-            <div class="info-section-title">👨‍👩‍👧‍👦 Diğer Akrabalık Bağları</div>
-            <div class="modal-akrabalik" id="modalAkrabalik" style="margin-bottom: 20px;">
-                Henüz akrabalık notu girilmemiş.
-            </div>
-
-            <!-- HİKAYE -->
-            <div class="info-section-title">📜 Aile Hikayesi / Notlar</div>
-            <div class="modal-story" id="modalHikaye">Hikaye yükleniyor...</div>
+            <div class="modal-item" style="margin-bottom: 15px;"><strong>Hikaye / Notlar</strong> <span id="modalHikaye" style="font-weight:400; font-size: 0.95rem;">-</span></div>
+            <div class="modal-item" style="margin-bottom: 15px;"><strong>Diğer Akrabalıklar</strong> <span id="modalEkstraAkrabalik" style="font-weight:400; font-size: 0.95rem; color: var(--gold);">-</span></div>
         </div>
     </div>
 
@@ -174,7 +126,6 @@
         let tumVeriler = [];
         let hiyerarsi = {}; 
         let aktifBoy = "";
-        let aktifSulale = "";
 
         function parseCSV(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line);
@@ -201,9 +152,7 @@
                 const response = await fetch(CSV_URL);
                 const csvText = await response.text();
                 tumVeriler = parseCSV(csvText);
-                
                 verileriIsle();
-                istatistikleriHesapla();
                 boylariListele();
             } catch (error) {
                 document.getElementById('boy-listesi').innerHTML = "<p>Veriler yüklenirken hata oluştu.</p>";
@@ -213,46 +162,27 @@
         function verileriIsle() {
             hiyerarsi = {};
             tumVeriler.forEach(kisi => {
-                let boyAdi = kisi['Boy'] ? kisi['Boy'].trim() : 'Boyu Belirtilmemiş';
-                let sulaleAdi = kisi['Sülale'] ? kisi['Sülale'].trim() : 'Sülalesi Belirtilmemiş';
-                
+                let boyAdi = kisi['Boy'] ? kisi['Boy'].trim() : 'Boy Belirtilmemiş';
+                let sulaleAdi = kisi['Sülale'] ? kisi['Sülale'].trim() : 'Sülale Belirtilmemiş';
                 boyAdi = boyAdi.charAt(0).toUpperCase() + boyAdi.slice(1).toLowerCase();
                 sulaleAdi = sulaleAdi.charAt(0).toUpperCase() + sulaleAdi.slice(1).toLowerCase();
 
                 if (!hiyerarsi[boyAdi]) hiyerarsi[boyAdi] = {};
                 if (!hiyerarsi[boyAdi][sulaleAdi]) hiyerarsi[boyAdi][sulaleAdi] = [];
-                
                 hiyerarsi[boyAdi][sulaleAdi].push(kisi);
             });
-        }
-
-        function istatistikleriHesapla() {
-            document.getElementById('stat-kisi').innerText = tumVeriler.length;
-            let toplamSulale = 0;
-            let toplamBoy = Object.keys(hiyerarsi).filter(b => b !== 'Boyu Belirtilmemiş').length;
-            for (let boy in hiyerarsi) { toplamSulale += Object.keys(hiyerarsi[boy]).length; }
-            document.getElementById('stat-sulale').innerText = toplamSulale;
-            document.getElementById('stat-boy').innerText = toplamBoy;
         }
 
         function boylariListele() {
             const kapsayici = document.getElementById('boy-listesi');
             kapsayici.innerHTML = '';
-            if(Object.keys(hiyerarsi).length === 0) { kapsayici.innerHTML = '<p>Henüz kayıt yok.</p>'; return; }
-
             for (const [boyAdi, sulaleler] of Object.entries(hiyerarsi).sort()) {
                 let kisiSayisi = 0;
                 for(let s in sulaleler) { kisiSayisi += sulaleler[s].length; }
                 let sulaleSayisi = Object.keys(sulaleler).length;
-
                 const kart = document.createElement('div');
                 kart.className = 'card';
-                kart.innerHTML = `
-                    <div class="card-title">${boyAdi}</div>
-                    <div class="card-subtitle">Boyu</div>
-                    <div class="card-subtitle highlight">${sulaleSayisi} Sülale · ${kisiSayisi} Kişi</div>
-                    <div class="card-arrow">➔</div>
-                `;
+                kart.innerHTML = `<div class="card-title">${boyAdi}</div><div class="card-subtitle">${sulaleSayisi} Sülale · ${kisiSayisi} Kişi</div><div class="card-arrow">➔</div>`;
                 kart.onclick = () => boyDetayGoster(boyAdi);
                 kapsayici.appendChild(kart);
             }
@@ -263,17 +193,10 @@
             document.getElementById('secilen-boy-baslik').innerText = boyAdi + " Boyu";
             const kapsayici = document.getElementById('boyun-sulaleleri');
             kapsayici.innerHTML = '';
-            const sulaleler = hiyerarsi[boyAdi];
-
-            for (const [sulaleAdi, kisiler] of Object.entries(sulaleler).sort()) {
+            for (const [sulaleAdi, kisiler] of Object.entries(hiyerarsi[boyAdi]).sort()) {
                 const kart = document.createElement('div');
                 kart.className = 'card';
-                kart.innerHTML = `
-                    <div class="card-title">${sulaleAdi}</div>
-                    <div class="card-subtitle">Sülalesi</div>
-                    <div class="card-subtitle highlight">${kisiler.length} Kişi</div>
-                    <div class="card-arrow">➔</div>
-                `;
+                kart.innerHTML = `<div class="card-title">${sulaleAdi}</div><div class="card-subtitle">${kisiler.length} Kişi</div><div class="card-arrow">➔</div>`;
                 kart.onclick = () => sulaleDetayGoster(boyAdi, sulaleAdi);
                 kapsayici.appendChild(kart);
             }
@@ -281,107 +204,109 @@
         }
 
         function sulaleDetayGoster(boyAdi, sulaleAdi) {
-            aktifSulale = sulaleAdi;
             document.getElementById('secilen-sulale-baslik').innerText = sulaleAdi + " Sülalesi";
-            document.getElementById('sulale-aciklama').innerText = `${boyAdi} Boyu'na mensup ${sulaleAdi} Sülalesi üyeleri.`;
-            
             const kapsayici = document.getElementById('kisi-listesi');
             kapsayici.innerHTML = '';
-
             const kisiler = hiyerarsi[boyAdi][sulaleAdi];
             kisiler.sort((a, b) => (a['AdSoyad'] || '').localeCompare(b['AdSoyad'] || ''));
-
             kisiler.forEach(kisi => {
                 const kart = document.createElement('div');
                 kart.className = 'card';
-                kart.innerHTML = `
-                    <div class="card-title" style="font-size:1.2rem; color: var(--text-main);">${kisi['AdSoyad'] || 'İsimsiz'}</div>
-                    <div class="card-subtitle">Baba: ${kisi['BabaAdi'] || '-'}</div>
-                    <div class="card-subtitle">Doğum: ${kisi['DogumYili'] || '-'}</div>
-                    <div class="card-arrow">➔</div>
-                `;
+                kart.innerHTML = `<div class="card-title" style="font-size:1.2rem; color: var(--text-main);">${kisi['AdSoyad'] || 'İsimsiz'}</div><div class="card-subtitle">Baba: ${kisi['BabaID'] || kisi['BabaAdi'] || '-'}</div><div class="card-subtitle">Doğum: ${kisi['DogumYili'] || '-'}</div><div class="card-arrow">➔</div>`;
                 kart.onclick = () => modalAc(kisi);
                 kapsayici.appendChild(kart);
             });
             sayfaDegistir('sulale-sayfasi');
         }
 
-        function geriDonBoy() {
-            if(aktifBoy) { boyDetayGoster(aktifBoy); } 
-            else { sayfaDegistir('ana-sayfa'); }
-        }
-
+        function geriDonBoy() { if(aktifBoy) boyDetayGoster(aktifBoy); else sayfaDegistir('ana-sayfa'); }
         function sayfaDegistir(sayfaId) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(sayfaId).classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        // --- MODAL VE AKRABALIK MANTIĞI ---
+        // --- AKILLI İSİM EŞLEŞTİRME MANTIĞI ---
         function modalAc(kisi) {
             document.getElementById('modalIsim').innerText = kisi['AdSoyad'] || 'İsimsiz';
-            document.getElementById('modalBoy').innerText = kisi['Boy'] || '-';
-            document.getElementById('modalSulale').innerText = kisi['Sülale'] || '-';
-            document.getElementById('modalBaba').innerText = kisi['BabaAdi'] || '-';
+            document.getElementById('modalSulale').innerText = `${kisi['Boy'] || '-'} / ${kisi['Sülale'] || '-'}`;
             document.getElementById('modalYil').innerText = kisi['DogumYili'] || '-';
-            document.getElementById('modalYer').innerText = kisi['DogumYeri'] || '-';
-
-            // 1. Manuel Akrabalık Notunu Göster
-            const akrabalikNotu = kisi['Akrabalik'] || kisi['AkrabalikNotu'] || kisi['Yakinlik'];
-            document.getElementById('modalAkrabalik').innerHTML = akrabalikNotu ? akrabalikNotu : 'Bu kişi için henüz özel bir akrabalık notu girilmemiş.';
-
-            // 2. Hikayeyi Göster
-            document.getElementById('modalHikaye').innerText = kisi['Hikaye'] || kisi['Bilgi'] || 'Henüz bir hikaye eklenmemiş.';
-
-            // 3. Otomatik Baba/Dede Soy Bağı Bulma
-            const soyBagiKutusu = document.getElementById('modalSoyBagi');
-            soyBagiKutusu.innerHTML = '';
-
-            const kisiBabaAdi = kisi['BabaAdi'] ? kisi['BabaAdi'].trim().toLowerCase() : '';
+            document.getElementById('modalHikaye').innerText = kisi['Hikaye'] || kisi['Bilgi'] || 'Henüz hikaye eklenmemiş.';
             
-            if (!kisiBabaAdi) {
-                soyBagiKutusu.innerHTML = 'Baba adı girilmediği için soy bağı hesaplanamıyor.';
-            } else {
-                // Tabloda bu kişinin babasını ara (Aynı sülalede ve AdSoyad'ı baba adıyla eşleşen)
+            // Tablodaki "Akrabalik" sütununu göster
+            const ekstra = kisi['Akrabalik'] || kisi['AkrabalikNotu'];
+            document.getElementById('modalEkstraAkrabalik').innerText = ekstra ? ekstra : 'Özel bir not girilmemiş.';
+
+            const soyAgaciAlani = document.getElementById('soyAgaciAlani');
+            soyAgaciAlani.innerHTML = '';
+
+            const kisiAdi = (kisi['AdSoyad'] || '').trim();
+            const kisiSulale = (kisi['Sülale'] || '').trim().toLowerCase();
+            const babaAdi = (kisi['BabaID'] || kisi['BabaAdi'] || '').trim().toLowerCase(); // Hem BabaID hem BabaAdi sütununa bakar
+
+            // 1. BABAYI BUL (Aynı sülalede, adı baba adıyla eşleşen biri var mı?)
+            if (babaAdi !== "") {
                 const baba = tumVeriler.find(k => {
-                    const ad = (k['AdSoyad'] || '').trim().toLowerCase();
-                    const sulale = (k['Sülale'] || '').trim().toLowerCase();
-                    const kisiSulale = (kisi['Sülale'] || '').trim().toLowerCase();
-                    // İsmi baba adıyla başlıyor mu? (Örn: Baba adı "İsmet" ise, tabloda "İsmet Özkan" arıyoruz)
-                    return ad.includes(kisiBabaAdi) && sulale === kisiSulale && k !== kisi; 
+                    const kAd = (k['AdSoyad'] || '').toLowerCase();
+                    const kSulale = (k['Sülale'] || '').toLowerCase();
+                    // İsmin içinde baba adı geçiyor mu? VE Aynı sülalede mi?
+                    return kAd.includes(babaAdi) && kSulale === kisiSulale && k !== kisi;
                 });
 
                 if (baba) {
-                    soyBagiKutusu.innerHTML = `Babası: <span class="clickable-relative" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${baba['AdSoyad']}')))">${baba['AdSoyad']}</span> (Tıkla ve Gör)`;
-                    
-                    // Dede bulma (Babanın babası)
-                    const dedeBabaAdi = baba['BabaAdi'] ? baba['BabaAdi'].trim().toLowerCase() : '';
-                    if(dedeBabaAdi) {
-                        const dede = tumVeriler.find(k => {
-                            const ad = (k['AdSoyad'] || '').trim().toLowerCase();
-                            const sulale = (k['Sülale'] || '').trim().toLowerCase();
-                            return ad.includes(dedeBabaAdi) && sulale === kisiSulale && k !== baba;
-                        });
-                        if(dede) {
-                            soyBagiKutusu.innerHTML += `<br><br>Dedesi: <span class="clickable-relative" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${dede['AdSoyad']}')))">${dede['AdSoyad']}</span>`;
-                        }
-                    }
-                } else {
-                    soyBagiKutusu.innerHTML = `Babası (${kisi['BabaAdi']}) bu sülalede kayıtlı değil veya henüz tabloya eklenmemiş.`;
+                    soyAgaciAlani.innerHTML += `
+                        <div class="tree-title">Yukarı Soy (Atalar)</div>
+                        <ul class="tree-list">
+                            <li>Babası: <span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${baba['AdSoyad']}' && k['Sülale'].toLowerCase() === '${kisiSulale}')))">${baba['AdSoyad']}</span></li>
+                        </ul>
+                    `;
                 }
+            }
+
+            // 2. ÇOCUKLARI BUL (Tabloda Baba adı kısmına, bu kişinin adı yazılmış olanlar)
+            const ilkAdi = kisiAdi.split(' ')[0].toLowerCase(); // Berk Sever ise "berk" alır
+            const cocuklar = tumVeriler.filter(k => {
+                const kBabaAd = (k['BabaID'] || k['BabaAdi'] || '').trim().toLowerCase();
+                const kSulale = (k['Sülale'] || '').toLowerCase();
+                return kBabaAd === ilkAdi && kSulale === kisiSulale && k !== kisi;
+            });
+
+            if (cocuklar.length > 0) {
+                let cocukHtml = `<div class="tree-title">Aşağı Soy (Evlatlar)</div><ul class="tree-list">`;
+                cocuklar.forEach(cocuk => {
+                    cocukHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${cocuk['AdSoyad']}' && k['Sülale'].toLowerCase() === '${kisiSulale}')))">${cocuk['AdSoyad']}</span></li>`;
+                });
+                cocukHtml += `</ul>`;
+                soyAgaciAlani.innerHTML += cocukHtml;
+            }
+
+            // 3. KARDEŞLERİ BUL (Baba adı aynı olanlar)
+            if (babaAdi !== "") {
+                const kardesler = tumVeriler.filter(k => {
+                    const kBabaAd = (k['BabaID'] || k['BabaAdi'] || '').trim().toLowerCase();
+                    const kSulale = (k['Sülale'] || '').toLowerCase();
+                    return kBabaAd === babaAdi && kSulale === kisiSulale && k !== kisi;
+                });
+                
+                if (kardesler.length > 0) {
+                    let kardesHtml = `<div class="tree-title">Kardeşleri</div><ul class="tree-list">`;
+                    kardesler.forEach(kardes => {
+                        kardesHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${kardes['AdSoyad']}' && k['Sülale'].toLowerCase() === '${kisiSulale}')))">${kardes['AdSoyad']}</span></li>`;
+                    });
+                    kardesHtml += `</ul>`;
+                    soyAgaciAlani.innerHTML += kardesHtml;
+                }
+            }
+
+            if (soyAgaciAlani.innerHTML === '') {
+                soyAgaciAlani.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">Bu kişinin akrabaları tabloda henüz bulunamadı.</p>';
             }
 
             document.getElementById('detayModal').classList.add('active');
         }
 
-        function kapatModal() {
-            document.getElementById('detayModal').classList.remove('active');
-        }
-
-        document.getElementById('detayModal').addEventListener('click', function(e) {
-            if (e.target === this) kapatModal();
-        });
-
+        function kapatModal() { document.getElementById('detayModal').classList.remove('active'); }
+        document.getElementById('detayModal').addEventListener('click', function(e) { if (e.target === this) kapatModal(); });
         window.onload = verileriYukle;
     </script>
 </body>
