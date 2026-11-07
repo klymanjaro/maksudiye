@@ -60,7 +60,6 @@
         /* --- Sekmeler (Sayfa Geçişleri) --- */
         .page-section { display: none; animation: fadeIn 0.4s ease; }
         .page-section.active { display: block; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- Ana Sayfa: Hikaye & İstatistik --- */
@@ -116,7 +115,7 @@
             gap: 20px;
         }
 
-        /* --- Kart Tasarımı (Hem Sülale Hem Kişi İçin) --- */
+        /* --- Kart Tasarımı --- */
         .card {
             background-color: var(--panel-bg);
             border: 1px solid rgba(212, 175, 55, 0.2);
@@ -138,7 +137,7 @@
             font-size: 1.4rem;
             color: var(--gold);
             margin-bottom: 10px;
-            text-transform: capitalize;
+            text-transform: uppercase;
         }
 
         .card-subtitle {
@@ -166,6 +165,20 @@
             transition: 0.2s;
         }
         .back-btn:hover { color: #fff; }
+
+        /* --- 12 Boy Bilgi Kutusu --- */
+        .tribes-box {
+            background-color: rgba(212, 175, 55, 0.05);
+            border: 1px dashed var(--gold);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+        .tribes-box h3 { color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 15px; }
+        .tribe-list { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; }
+        .tribe-item { background: var(--panel-bg); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); }
+        .tribe-feudal { color: #ff9999; border-color: #ff9999; } /* Feodal boylar için hafif kırmızımsı */
+        .tribe-democratic { color: #99ccff; border-color: #99ccff; } /* Demokratik boylar için hafif mavimsi */
 
         /* --- Modal --- */
         .modal-overlay {
@@ -234,9 +247,22 @@
                 </div>
             </div>
 
+            <!-- SÜLALELER KISMI -->
             <h2 class="section-title">Köyün Sülaleleri</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Kişileri görmek için bir sülale seçin.</p>
             <div id="sulale-listesi" class="grid">
                 <!-- Sülale kartları buraya gelecek -->
+            </div>
+
+            <!-- 12 ÇERKES BOYU BİLGİ KISMI -->
+            <div class="tribes-box">
+                <h3>12 Çerkes (Adige) Boyu</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-muted);">
+                    Çerkesler geleneksel olarak 12 ana boydan oluşur. <span style="color:#ff9999;">Kırmızı</span> olanlar Prensliğe (Feodal), <span style="color:#99ccff;">Mavi</span> olanlar Demokratik yapıya sahiptir.
+                </p>
+                <ul class="tribe-list" id="boy-listesi">
+                    <!-- JS ile doldurulacak -->
+                </ul>
             </div>
         </div>
 
@@ -268,8 +294,25 @@
     </div>
 
     <script>
+        // SENİN GOOGLE SHEETS LİNKİN
         const CSV_URL = "https://docs.google.com/spreadsheets/d/104r7BF560IMgrIeFXH_l2f8L2LR3DrV3CuRx2uMXLXQ/export?format=csv";
         let tumVeriler = [];
+
+        // 12 Çerkes Boyu ve Yapıları
+        const cerkesBoylari = [
+            { ad: "Abzeh", yapi: "demokratik" },
+            { ad: "Besleney", yapi: "feodal" },
+            { ad: "Bjeduğ", yapi: "feodal" },
+            { ad: "Hatukay", yapi: "feodal" },
+            { ad: "Kabardey", yapi: "feodal" },
+            { ad: "Mamheg", yapi: "feodal" },
+            { ad: "Natuhay", yapi: "demokratik" },
+            { ad: "Şapsığ", yapi: "demokratik" },
+            { ad: "Çemguy", yapi: "feodal" },
+            { ad: "Ubıh", yapi: "feodal" },
+            { ad: "Yegerukay", yapi: "feodal" },
+            { ad: "Janey", yapi: "feodal" }
+        ];
 
         function parseCSV(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line);
@@ -292,6 +335,8 @@
         }
 
         async function verileriYukle() {
+            boylariListele(); // Statik boyları hemen yükle
+
             try {
                 const response = await fetch(CSV_URL);
                 const csvText = await response.text();
@@ -302,6 +347,17 @@
             } catch (error) {
                 document.getElementById('sulale-listesi').innerHTML = "<p>Veriler yüklenirken hata oluştu. Tablonun paylaşıma açık olduğundan emin olun.</p>";
             }
+        }
+
+        // 12 Boyu Ekrana Bas
+        function boylariListele() {
+            const kapsayici = document.getElementById('boy-listesi');
+            cerkesBoylari.forEach(boy => {
+                const li = document.createElement('li');
+                li.className = `tribe-item tribe-${boy.yapi}`;
+                li.innerText = boy.ad;
+                kapsayici.appendChild(li);
+            });
         }
 
         function istatistikleriHesapla() {
@@ -316,7 +372,8 @@
             });
 
             document.getElementById('stat-sulale').innerText = sulaleler.size;
-            document.getElementById('stat-boy').innerText = boylar.size;
+            // Eğer tabloda boy girilmemişse 0 gösterir, girildikçe artar
+            document.getElementById('stat-boy').innerText = boylar.size; 
         }
 
         // ANA SAYFA: Sülaleleri Gruplayarak Listele
@@ -324,24 +381,29 @@
             const kapsayici = document.getElementById('sulale-listesi');
             kapsayici.innerHTML = '';
 
-            // Sülalelere göre gruplama
             const gruplar = {};
             tumVeriler.forEach(kisi => {
                 let sulaleAdi = kisi['Sülale'] ? kisi['Sülale'].trim() : 'Bilinmeyen Sülale';
-                // İlk harfi büyüt
+                // İlk harfi büyüt, gerisini küçült
                 sulaleAdi = sulaleAdi.charAt(0).toUpperCase() + sulaleAdi.slice(1).toLowerCase();
                 
                 if (!gruplar[sulaleAdi]) gruplar[sulaleAdi] = [];
                 gruplar[sulaleAdi].push(kisi);
             });
 
-            // Grupları ekrana bas
+            // Eğer hiç sülale yoksa uyarı ver
+            if(Object.keys(gruplar).length === 0) {
+                kapsayici.innerHTML = '<p style="color:var(--text-muted);">Henüz sülale kaydı bulunmuyor.</p>';
+                return;
+            }
+
             for (const [sulaleAdi, kisiler] of Object.entries(gruplar).sort()) {
                 const kart = document.createElement('div');
                 kart.className = 'card';
                 kart.innerHTML = `
-                    <div class="card-title">${sulaleAdi} Sülalesi</div>
-                    <div class="card-subtitle">${kisiler.length} Kayıtlı Kişi</div>
+                    <div class="card-title">${sulaleAdi}</div>
+                    <div class="card-subtitle">Sülalesi</div>
+                    <div class="card-subtitle" style="margin-top: 5px; color: var(--gold);">${kisiler.length} Kişi</div>
                     <div class="card-arrow">➔</div>
                 `;
                 kart.onclick = () => sulaleDetayGoster(sulaleAdi, kisiler);
@@ -366,8 +428,9 @@
 
                 const kart = document.createElement('div');
                 kart.className = 'card';
+                // Burada başlık artık kişinin adı
                 kart.innerHTML = `
-                    <div class="card-title" style="font-size:1.2rem;">${adSoyad}</div>
+                    <div class="card-title" style="font-size:1.2rem; color: var(--text-main);">${adSoyad}</div>
                     <div class="card-subtitle">Boy: ${boy}</div>
                     <div class="card-subtitle">Doğum: ${dogumYili}</div>
                     <div class="card-arrow">➔</div>
