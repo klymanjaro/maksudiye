@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maksudiye Köyü | Tarih ve Sülaleler</title>
+    <title>Maksudiye Köyü | Çerkes Tarihi ve Sülaleler</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -28,7 +28,6 @@
             line-height: 1.6;
         }
 
-        /* --- Header --- */
         header {
             text-align: center;
             padding: 60px 20px 40px;
@@ -57,12 +56,12 @@
             padding: 40px 20px;
         }
 
-        /* --- Sekmeler (Sayfa Geçişleri) --- */
+        /* --- Sayfa Geçişleri --- */
         .page-section { display: none; animation: fadeIn 0.4s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Ana Sayfa: Hikaye & İstatistik --- */
+        /* --- Ana Sayfa Bölümleri --- */
         .history-box {
             background-color: var(--panel-bg);
             border-left: 5px solid var(--gold);
@@ -72,48 +71,17 @@
             box-shadow: var(--card-shadow);
         }
 
-        .history-box h2 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            margin-bottom: 15px;
-            font-size: 1.6rem;
-        }
+        .history-box h2 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 15px; font-size: 1.6rem; }
 
-        .stats-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .stat-box {
-            flex: 1;
-            min-width: 200px;
-            background-color: var(--panel-bg);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-        }
-
+        .stats-row { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
+        .stat-box { flex: 1; min-width: 200px; background-color: var(--panel-bg); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; padding: 20px; text-align: center; }
         .stat-box h3 { font-size: 1rem; color: var(--text-muted); font-weight: 400; margin-bottom: 10px; }
         .stat-box .number { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold); line-height: 1; }
 
-        /* --- Izgara Yapısı --- */
-        .section-title {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
+        .section-title { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.8rem; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .section-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
         /* --- Kart Tasarımı --- */
         .card {
@@ -126,59 +94,20 @@
             position: relative;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-        }
+        .card:hover { transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
 
-        .card-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
-            color: var(--gold);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .card-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
+        .card-title { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 5px; text-transform: uppercase; }
+        .card-subtitle { font-size: 0.9rem; color: var(--text-muted); }
+        .card-subtitle.highlight { color: var(--text-main); margin-top: 10px; font-weight: 500; }
         
-        .card-arrow {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            color: var(--gold);
-            font-size: 1.2rem;
-        }
+        .card-arrow { position: absolute; bottom: 20px; right: 20px; color: var(--gold); font-size: 1.2rem; }
 
         /* --- Geri Butonu --- */
         .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--gold);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
+            display: inline-block; margin-bottom: 20px; color: var(--gold); text-decoration: none;
+            font-weight: 600; cursor: pointer; font-size: 1rem; transition: 0.2s;
         }
         .back-btn:hover { color: #fff; }
-
-        /* --- 12 Boy Bilgi Kutusu --- */
-        .tribes-box {
-            background-color: rgba(212, 175, 55, 0.05);
-            border: 1px dashed var(--gold);
-            border-radius: 8px;
-            padding: 25px;
-            margin-top: 40px;
-        }
-        .tribes-box h3 { color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 15px; }
-        .tribe-list { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; }
-        .tribe-item { background: var(--panel-bg); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); }
-        .tribe-feudal { color: #ff9999; border-color: #ff9999; } /* Feodal boylar için hafif kırmızımsı */
-        .tribe-democratic { color: #99ccff; border-color: #99ccff; } /* Demokratik boylar için hafif mavimsi */
 
         /* --- Modal --- */
         .modal-overlay {
@@ -198,81 +127,59 @@
 
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: var(--text-muted); cursor: pointer; }
         .close-btn:hover { color: var(--gold); }
-
         .modal-content h2 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 20px; font-size: 1.8rem; }
 
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .modal-item strong { color: var(--text-muted); display: block; font-size: 0.8rem; text-transform: uppercase; }
         .modal-item span { font-size: 1.05rem; font-weight: 600; }
+        .modal-story { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold); padding: 15px; border-radius: 0 6px 6px 0; font-style: italic; color: #dcdcdc; }
 
-        .modal-story {
-            background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold);
-            padding: 15px; border-radius: 0 6px 6px 0; font-style: italic; color: #dcdcdc;
-        }
-
-        @media (max-width: 600px) {
-            header h1 { font-size: 2rem; }
-            .modal-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 600px) { header h1 { font-size: 2rem; } .modal-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <header>
         <h1>Maksudiye Köyü</h1>
-        <p>1864'ten Bugüne Sülalelerimiz ve Hikayelerimiz</p>
+        <p>1864'ten Bugüne Boylarımız, Sülalelerimiz ve Hikayelerimiz</p>
     </header>
 
     <div class="container">
         
-        <!-- 1. ANA SAYFA (Sülaleler ve Özet) -->
+        <!-- 1. ANA SAYFA (12 BOY) -->
         <div id="ana-sayfa" class="page-section active">
             <div class="history-box">
                 <h2>Köyün Hafızası</h2>
-                <p>1864 yılında Kafkasya'dan zorunlu göçle ayrılan atalarımız, Karadeniz'in öte yakasında yeni bir hayat kurdu. Bu dijital arşiv; dedelerimizin isimlerini, kökenlerini ve köyümüzün ortak hafızasını gelecek nesillere aktarmak için hazırlandı.</p>
+                <p>1864 yılında Kafkasya'dan zorunlu göçle ayrılan atalarımız, Karadeniz'in öte yakasında yeni bir hayat kurdu. Bu dijital arşiv; hangi boya mensup olduğumuzu, sülalelerimizi ve köyümüzün ortak hafızasını gelecek nesillere aktarmak için hazırlandı.</p>
             </div>
 
             <div class="stats-row">
-                <div class="stat-box">
-                    <h3>Kayıtlı Kişi</h3>
-                    <div class="number" id="stat-kisi">0</div>
-                </div>
-                <div class="stat-box">
-                    <h3>Sülale</h3>
-                    <div class="number" id="stat-sulale">0</div>
-                </div>
-                <div class="stat-box">
-                    <h3>Boy</h3>
-                    <div class="number" id="stat-boy">0</div>
-                </div>
+                <div class="stat-box"><h3>Kayıtlı Kişi</h3><div class="number" id="stat-kisi">0</div></div>
+                <div class="stat-box"><h3>Sülale</h3><div class="number" id="stat-sulale">0</div></div>
+                <div class="stat-box"><h3>Boy (Köyde)</h3><div class="number" id="stat-boy">0</div></div>
             </div>
 
-            <!-- SÜLALELER KISMI -->
-            <h2 class="section-title">Köyün Sülaleleri</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">Kişileri görmek için bir sülale seçin.</p>
-            <div id="sulale-listesi" class="grid">
-                <!-- Sülale kartları buraya gelecek -->
-            </div>
-
-            <!-- 12 ÇERKES BOYU BİLGİ KISMI -->
-            <div class="tribes-box">
-                <h3>12 Çerkes (Adige) Boyu</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-muted);">
-                    Çerkesler geleneksel olarak 12 ana boydan oluşur. <span style="color:#ff9999;">Kırmızı</span> olanlar Prensliğe (Feodal), <span style="color:#99ccff;">Mavi</span> olanlar Demokratik yapıya sahiptir.
-                </p>
-                <ul class="tribe-list" id="boy-listesi">
-                    <!-- JS ile doldurulacak -->
-                </ul>
-            </div>
+            <h2 class="section-title">Köyümüzdeki Çerkes Boyları</h2>
+            <p class="section-desc">Sülaleleri ve kişileri görmek için bir boy seçin. (Tabloya veri girdikçe buradaki boylar otomatik oluşur).</p>
+            
+            <!-- Boyların Listeleneceği Yer -->
+            <div id="boy-listesi" class="grid"></div>
         </div>
 
-        <!-- 2. SÜLALE İÇİ SAYFASI (Kişiler) -->
+        <!-- 2. BOY İÇİ SAYFASI (Sülaleler) -->
+        <div id="boy-sayfasi" class="page-section">
+            <a class="back-btn" onclick="sayfaDegistir('ana-sayfa')">← Ana Sayfaya (Boylara) Dön</a>
+            <h2 class="section-title" id="secilen-boy-baslik">Boy Adı</h2>
+            <p class="section-desc">Bu boya mensup sülaleler listeleniyor.</p>
+            <div id="boyun-sulaleleri" class="grid"></div>
+        </div>
+
+        <!-- 3. SÜLALE İÇİ SAYFASI (Kişiler) -->
         <div id="sulale-sayfasi" class="page-section">
-            <a class="back-btn" onclick="sayfaDegistir('ana-sayfa')">← Ana Sayfaya Dön</a>
+            <a class="back-btn" onclick="geriDonBoy()">← Sülalelere Dön</a>
             <h2 class="section-title" id="secilen-sulale-baslik">Sülale Adı</h2>
-            <div id="kisi-listesi" class="grid">
-                <!-- O sülaleye ait kişiler buraya gelecek -->
-            </div>
+            <p class="section-desc" id="sulale-aciklama">Bu sülaleye mensup kişiler listeleniyor.</p>
+            <div id="kisi-listesi" class="grid"></div>
         </div>
 
     </div>
@@ -283,8 +190,8 @@
             <span class="close-btn" onclick="kapatModal()">&times;</span>
             <h2 id="modalIsim">İsim</h2>
             <div class="modal-grid">
-                <div class="modal-item"><strong>Sülale</strong> <span id="modalSulale">-</span></div>
                 <div class="modal-item"><strong>Boy</strong> <span id="modalBoy">-</span></div>
+                <div class="modal-item"><strong>Sülale</strong> <span id="modalSulale">-</span></div>
                 <div class="modal-item"><strong>Baba Adı</strong> <span id="modalBaba">-</span></div>
                 <div class="modal-item"><strong>Doğum Yılı</strong> <span id="modalYil">-</span></div>
                 <div class="modal-item"><strong>Doğum Yeri</strong> <span id="modalYer">-</span></div>
@@ -294,26 +201,14 @@
     </div>
 
     <script>
-        // SENİN GOOGLE SHEETS LİNKİN
         const CSV_URL = "https://docs.google.com/spreadsheets/d/104r7BF560IMgrIeFXH_l2f8L2LR3DrV3CuRx2uMXLXQ/export?format=csv";
+        
         let tumVeriler = [];
+        let hiyerarsi = {}; // Boy -> Sülale -> Kişiler şeklinde tutacağız
+        let aktifBoy = "";
+        let aktifSulale = "";
 
-        // 12 Çerkes Boyu ve Yapıları
-        const cerkesBoylari = [
-            { ad: "Abzeh", yapi: "demokratik" },
-            { ad: "Besleney", yapi: "feodal" },
-            { ad: "Bjeduğ", yapi: "feodal" },
-            { ad: "Hatukay", yapi: "feodal" },
-            { ad: "Kabardey", yapi: "feodal" },
-            { ad: "Mamheg", yapi: "feodal" },
-            { ad: "Natuhay", yapi: "demokratik" },
-            { ad: "Şapsığ", yapi: "demokratik" },
-            { ad: "Çemguy", yapi: "feodal" },
-            { ad: "Ubıh", yapi: "feodal" },
-            { ad: "Yegerukay", yapi: "feodal" },
-            { ad: "Janey", yapi: "feodal" }
-        ];
-
+        // CSV Parser
         function parseCSV(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line);
             if (lines.length === 0) return [];
@@ -335,104 +230,125 @@
         }
 
         async function verileriYukle() {
-            boylariListele(); // Statik boyları hemen yükle
-
             try {
                 const response = await fetch(CSV_URL);
                 const csvText = await response.text();
                 tumVeriler = parseCSV(csvText);
                 
+                verileriIsle();
                 istatistikleriHesapla();
-                sulaleleriListele();
+                boylariListele();
             } catch (error) {
-                document.getElementById('sulale-listesi').innerHTML = "<p>Veriler yüklenirken hata oluştu. Tablonun paylaşıma açık olduğundan emin olun.</p>";
+                document.getElementById('boy-listesi').innerHTML = "<p>Veriler yüklenirken hata oluştu.</p>";
             }
         }
 
-        // 12 Boyu Ekrana Bas
-        function boylariListele() {
-            const kapsayici = document.getElementById('boy-listesi');
-            cerkesBoylari.forEach(boy => {
-                const li = document.createElement('li');
-                li.className = `tribe-item tribe-${boy.yapi}`;
-                li.innerText = boy.ad;
-                kapsayici.appendChild(li);
+        // Verileri Boy -> Sülale -> Kişi olarak hiyerarşiye diz
+        function verileriIsle() {
+            hiyerarsi = {};
+            tumVeriler.forEach(kisi => {
+                let boyAdi = kisi['Boy'] ? kisi['Boy'].trim() : 'Boyu Belirtilmemiş';
+                let sulaleAdi = kisi['Sülale'] ? kisi['Sülale'].trim() : 'Sülalesi Belirtilmemiş';
+                
+                // İlk harfleri büyüt
+                boyAdi = boyAdi.charAt(0).toUpperCase() + boyAdi.slice(1).toLowerCase();
+                sulaleAdi = sulaleAdi.charAt(0).toUpperCase() + sulaleAdi.slice(1).toLowerCase();
+
+                if (!hiyerarsi[boyAdi]) hiyerarsi[boyAdi] = {};
+                if (!hiyerarsi[boyAdi][sulaleAdi]) hiyerarsi[boyAdi][sulaleAdi] = [];
+                
+                hiyerarsi[boyAdi][sulaleAdi].push(kisi);
             });
         }
 
         function istatistikleriHesapla() {
             document.getElementById('stat-kisi').innerText = tumVeriler.length;
             
-            const sulaleler = new Set();
-            const boylar = new Set();
+            let toplamSulale = 0;
+            let toplamBoy = Object.keys(hiyerarsi).filter(b => b !== 'Boyu Belirtilmemiş').length;
             
-            tumVeriler.forEach(kisi => {
-                if(kisi['Sülale'] && kisi['Sülale'].trim() !== '') sulaleler.add(kisi['Sülale'].toLowerCase());
-                if(kisi['Boy'] && kisi['Boy'].trim() !== '') boylar.add(kisi['Boy'].toLowerCase());
-            });
+            for (let boy in hiyerarsi) {
+                toplamSulale += Object.keys(hiyerarsi[boy]).length;
+            }
 
-            document.getElementById('stat-sulale').innerText = sulaleler.size;
-            // Eğer tabloda boy girilmemişse 0 gösterir, girildikçe artar
-            document.getElementById('stat-boy').innerText = boylar.size; 
+            document.getElementById('stat-sulale').innerText = toplamSulale;
+            document.getElementById('stat-boy').innerText = toplamBoy;
         }
 
-        // ANA SAYFA: Sülaleleri Gruplayarak Listele
-        function sulaleleriListele() {
-            const kapsayici = document.getElementById('sulale-listesi');
+        // ANA SAYFA: Boyları Listele
+        function boylariListele() {
+            const kapsayici = document.getElementById('boy-listesi');
             kapsayici.innerHTML = '';
 
-            const gruplar = {};
-            tumVeriler.forEach(kisi => {
-                let sulaleAdi = kisi['Sülale'] ? kisi['Sülale'].trim() : 'Bilinmeyen Sülale';
-                // İlk harfi büyüt, gerisini küçült
-                sulaleAdi = sulaleAdi.charAt(0).toUpperCase() + sulaleAdi.slice(1).toLowerCase();
-                
-                if (!gruplar[sulaleAdi]) gruplar[sulaleAdi] = [];
-                gruplar[sulaleAdi].push(kisi);
-            });
-
-            // Eğer hiç sülale yoksa uyarı ver
-            if(Object.keys(gruplar).length === 0) {
-                kapsayici.innerHTML = '<p style="color:var(--text-muted);">Henüz sülale kaydı bulunmuyor.</p>';
+            if(Object.keys(hiyerarsi).length === 0) {
+                kapsayici.innerHTML = '<p style="color:var(--text-muted);">Henüz kayıt bulunmuyor.</p>';
                 return;
             }
 
-            for (const [sulaleAdi, kisiler] of Object.entries(gruplar).sort()) {
+            for (const [boyAdi, sulaleler] of Object.entries(hiyerarsi).sort()) {
+                // O boydaki toplam kişi sayısını bul
+                let kisiSayisi = 0;
+                for(let s in sulaleler) { kisiSayisi += sulaleler[s].length; }
+                let sulaleSayisi = Object.keys(sulaleler).length;
+
+                const kart = document.createElement('div');
+                kart.className = 'card';
+                kart.innerHTML = `
+                    <div class="card-title">${boyAdi}</div>
+                    <div class="card-subtitle">Boyu</div>
+                    <div class="card-subtitle highlight">${sulaleSayisi} Sülale · ${kisiSayisi} Kişi</div>
+                    <div class="card-arrow">➔</div>
+                `;
+                kart.onclick = () => boyDetayGoster(boyAdi);
+                kapsayici.appendChild(kart);
+            }
+        }
+
+        // BOY SAYFASI: O boya ait sülaleleri göster
+        function boyDetayGoster(boyAdi) {
+            aktifBoy = boyAdi;
+            document.getElementById('secilen-boy-baslik').innerText = boyAdi + " Boyu";
+            
+            const kapsayici = document.getElementById('boyun-sulaleleri');
+            kapsayici.innerHTML = '';
+
+            const sulaleler = hiyerarsi[boyAdi];
+
+            for (const [sulaleAdi, kisiler] of Object.entries(sulaleler).sort()) {
                 const kart = document.createElement('div');
                 kart.className = 'card';
                 kart.innerHTML = `
                     <div class="card-title">${sulaleAdi}</div>
                     <div class="card-subtitle">Sülalesi</div>
-                    <div class="card-subtitle" style="margin-top: 5px; color: var(--gold);">${kisiler.length} Kişi</div>
+                    <div class="card-subtitle highlight">${kisiler.length} Kişi</div>
                     <div class="card-arrow">➔</div>
                 `;
-                kart.onclick = () => sulaleDetayGoster(sulaleAdi, kisiler);
+                kart.onclick = () => sulaleDetayGoster(boyAdi, sulaleAdi);
                 kapsayici.appendChild(kart);
             }
+
+            sayfaDegistir('boy-sayfasi');
         }
 
         // SÜLALE SAYFASI: O sülaleye ait kişileri göster
-        function sulaleDetayGoster(sulaleAdi, kisiler) {
+        function sulaleDetayGoster(boyAdi, sulaleAdi) {
+            aktifSulale = sulaleAdi;
             document.getElementById('secilen-sulale-baslik').innerText = sulaleAdi + " Sülalesi";
+            document.getElementById('sulale-aciklama').innerText = `${boyAdi} Boyu'na mensup ${sulaleAdi} Sülalesi üyeleri.`;
             
             const kapsayici = document.getElementById('kisi-listesi');
             kapsayici.innerHTML = '';
 
-            // Kişileri isme göre sırala
+            const kisiler = hiyerarsi[boyAdi][sulaleAdi];
             kisiler.sort((a, b) => (a['AdSoyad'] || '').localeCompare(b['AdSoyad'] || ''));
 
             kisiler.forEach(kisi => {
-                const adSoyad = kisi['AdSoyad'] || 'İsimsiz';
-                const boy = kisi['Boy'] || 'Boy Belirtilmemiş';
-                const dogumYili = kisi['DogumYili'] || '-';
-
                 const kart = document.createElement('div');
                 kart.className = 'card';
-                // Burada başlık artık kişinin adı
                 kart.innerHTML = `
-                    <div class="card-title" style="font-size:1.2rem; color: var(--text-main);">${adSoyad}</div>
-                    <div class="card-subtitle">Boy: ${boy}</div>
-                    <div class="card-subtitle">Doğum: ${dogumYili}</div>
+                    <div class="card-title" style="font-size:1.2rem; color: var(--text-main);">${kisi['AdSoyad'] || 'İsimsiz'}</div>
+                    <div class="card-subtitle">Baba: ${kisi['BabaAdi'] || '-'}</div>
+                    <div class="card-subtitle">Doğum: ${kisi['DogumYili'] || '-'}</div>
                     <div class="card-arrow">➔</div>
                 `;
                 kart.onclick = () => modalAc(kisi);
@@ -442,23 +358,29 @@
             sayfaDegistir('sulale-sayfasi');
         }
 
-        // Sayfa geçiş fonksiyonu
+        // Geri Dönüş Fonksiyonu (Sülaleden Boya)
+        function geriDonBoy() {
+            if(aktifBoy) {
+                boyDetayGoster(aktifBoy);
+            } else {
+                sayfaDegistir('ana-sayfa');
+            }
+        }
+
         function sayfaDegistir(sayfaId) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(sayfaId).classList.add('active');
-            window.scrollTo(0, 0); // Sayfa başına dön
+            window.scrollTo(0, 0);
         }
 
-        // Modal İşlemleri
         function modalAc(kisi) {
             document.getElementById('modalIsim').innerText = kisi['AdSoyad'] || 'İsimsiz';
-            document.getElementById('modalSulale').innerText = kisi['Sülale'] || '-';
             document.getElementById('modalBoy').innerText = kisi['Boy'] || '-';
+            document.getElementById('modalSulale').innerText = kisi['Sülale'] || '-';
             document.getElementById('modalBaba').innerText = kisi['BabaAdi'] || '-';
             document.getElementById('modalYil').innerText = kisi['DogumYili'] || '-';
             document.getElementById('modalYer').innerText = kisi['DogumYeri'] || '-';
             document.getElementById('modalHikaye').innerText = kisi['Hikaye'] || kisi['Bilgi'] || 'Henüz bir hikaye eklenmemiş.';
-            
             document.getElementById('detayModal').classList.add('active');
         }
 
