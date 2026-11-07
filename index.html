@@ -44,7 +44,6 @@
         .back-btn { display: inline-block; margin-bottom: 20px; color: var(--gold); text-decoration: none; font-weight: 600; cursor: pointer; }
         .back-btn:hover { color: #fff; }
 
-        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background-color: var(--panel-bg); width: 90%; max-width: 600px; padding: 30px; border-radius: 12px; border: 1px solid var(--gold); position: relative; max-height: 90vh; overflow-y: auto; }
@@ -55,13 +54,15 @@
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .modal-item strong { color: var(--text-muted); display: block; font-size: 0.8rem; text-transform: uppercase; }
         
-        /* Akrabalık Ağacı Görünümü */
         .family-tree-section { margin-top: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px dashed rgba(212, 175, 55, 0.4); }
         .tree-title { color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.1rem; }
         .tree-list { list-style: none; padding-left: 15px; border-left: 2px solid rgba(212,175,55,0.3); margin-bottom: 15px; }
         .tree-list li { margin-bottom: 8px; font-size: 0.95rem; }
         .clickable-name { color: var(--gold); cursor: pointer; font-weight: bold; text-decoration: underline; }
         .clickable-name:hover { color: #fff; }
+
+        .extra-info { margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.05); border-radius: 6px; border-left: 3px solid var(--gold); }
+        .extra-info strong { color: var(--gold); display: block; font-size: 0.85rem; margin-bottom: 5px; text-transform: uppercase; }
 
         @media (max-width: 600px) { header h1 { font-size: 2rem; } .modal-grid { grid-template-columns: 1fr; } }
     </style>
@@ -74,24 +75,21 @@
     </header>
 
     <div class="container">
-        <!-- 1. ANA SAYFA (Boylar) -->
         <div id="ana-sayfa" class="page-section active">
             <div class="history-box">
                 <h2>Köyün Hafızası</h2>
-                <p>Bu dijital arşiv, atalarımızdan bugüne uzanan soy bağlarını kayıt altına almak için hazırlandı. Bir isme tıklayarak onun babasını, çocuklarını ve kardeşlerini görebilirsiniz. Sistem, isim benzerliklerini ve sülale bağlarını kullanarak akrabalık ağını otomatik çıkarır.</p>
+                <p>Bu dijital arşiv, atalarımızdan bugüne uzanan soy bağlarını kayıt altına almak için hazırlandı. Bir isme tıklayarak onun ebeveynlerini, çocuklarını ve kardeşlerini görebilirsiniz.</p>
             </div>
-            <h2 class="section-title">Köyümüzdeki Çerkes Boyları</h2>
+            <h2 class="section-title">Köyümüzdeki Boylar</h2>
             <div id="boy-listesi" class="grid"></div>
         </div>
 
-        <!-- 2. BOY İÇİ SAYFASI (Sülaleler) -->
         <div id="boy-sayfasi" class="page-section">
             <a class="back-btn" onclick="sayfaDegistir('ana-sayfa')">← Boylara Dön</a>
             <h2 class="section-title" id="secilen-boy-baslik">Boy Adı</h2>
             <div id="boyun-sulaleleri" class="grid"></div>
         </div>
 
-        <!-- 3. SÜLALE İÇİ SAYFASI (Kişiler) -->
         <div id="sulale-sayfasi" class="page-section">
             <a class="back-btn" onclick="geriDonBoy()">← Sülalelere Dön</a>
             <h2 class="section-title" id="secilen-sulale-baslik">Sülale Adı</h2>
@@ -99,7 +97,6 @@
         </div>
     </div>
 
-    <!-- Kişi Detay Penceresi -->
     <div class="modal-overlay" id="detayModal">
         <div class="modal-content">
             <span class="close-btn" onclick="kapatModal()">&times;</span>
@@ -107,16 +104,20 @@
             
             <div class="modal-grid">
                 <div class="modal-item"><strong>Boy / Sülale</strong> <span id="modalSulale">-</span></div>
-                <div class="modal-item"><strong>Doğum Yılı</strong> <span id="modalYil">-</span></div>
+                <div class="modal-item"><strong>Yaşam Süresi</strong> <span id="modalYil">-</span></div>
             </div>
 
-            <!-- OTOMATİK SOY AĞACI -->
-            <div class="family-tree-section" id="soyAgaciAlani">
-                <!-- JavaScript ile doldurulacak -->
+            <div class="family-tree-section" id="soyAgaciAlani"></div>
+
+            <div class="extra-info" id="hikayeAlani" style="display:none;">
+                <strong>Hikaye / Notlar</strong>
+                <span id="modalHikaye"></span>
             </div>
 
-            <div class="modal-item" style="margin-bottom: 15px;"><strong>Hikaye / Notlar</strong> <span id="modalHikaye" style="font-weight:400; font-size: 0.95rem;">-</span></div>
-            <div class="modal-item" style="margin-bottom: 15px;"><strong>Diğer Akrabalıklar</strong> <span id="modalEkstraAkrabalik" style="font-weight:400; font-size: 0.95rem; color: var(--gold);">-</span></div>
+            <div class="extra-info" id="ozelAkrabalikAlani" style="display:none;">
+                <strong>Diğer Akrabalıklar</strong>
+                <span id="modalOzelAkrabalik"></span>
+            </div>
         </div>
     </div>
 
@@ -162,8 +163,9 @@
         function verileriIsle() {
             hiyerarsi = {};
             tumVeriler.forEach(kisi => {
-                let boyAdi = kisi['Boy'] ? kisi['Boy'].trim() : 'Boy Belirtilmemiş';
-                let sulaleAdi = kisi['Sülale'] ? kisi['Sülale'].trim() : 'Sülale Belirtilmemiş';
+                let boyAdi = (kisi['Boy'] && kisi['Boy'].trim() !== '') ? kisi['Boy'].trim() : 'Diğer';
+                let sulaleAdi = (kisi['Sülale'] && kisi['Sülale'].trim() !== '') ? kisi['Sülale'].trim() : 'Sülale Belirtilmemiş';
+                
                 boyAdi = boyAdi.charAt(0).toUpperCase() + boyAdi.slice(1).toLowerCase();
                 sulaleAdi = sulaleAdi.charAt(0).toUpperCase() + sulaleAdi.slice(1).toLowerCase();
 
@@ -176,10 +178,13 @@
         function boylariListele() {
             const kapsayici = document.getElementById('boy-listesi');
             kapsayici.innerHTML = '';
-            for (const [boyAdi, sulaleler] of Object.entries(hiyerarsi).sort()) {
+            const siraliBoylari = Object.entries(hiyerarsi).sort((a, b) => a[0].localeCompare(b[0]));
+
+            for (const [boyAdi, sulaleler] of siraliBoylari) {
                 let kisiSayisi = 0;
                 for(let s in sulaleler) { kisiSayisi += sulaleler[s].length; }
                 let sulaleSayisi = Object.keys(sulaleler).length;
+                
                 const kart = document.createElement('div');
                 kart.className = 'card';
                 kart.innerHTML = `<div class="card-title">${boyAdi}</div><div class="card-subtitle">${sulaleSayisi} Sülale · ${kisiSayisi} Kişi</div><div class="card-arrow">➔</div>`;
@@ -193,7 +198,10 @@
             document.getElementById('secilen-boy-baslik').innerText = boyAdi + " Boyu";
             const kapsayici = document.getElementById('boyun-sulaleleri');
             kapsayici.innerHTML = '';
-            for (const [sulaleAdi, kisiler] of Object.entries(hiyerarsi[boyAdi]).sort()) {
+            
+            const siraliSulaleler = Object.entries(hiyerarsi[boyAdi]).sort((a, b) => a[0].localeCompare(b[0]));
+
+            for (const [sulaleAdi, kisiler] of siraliSulaleler) {
                 const kart = document.createElement('div');
                 kart.className = 'card';
                 kart.innerHTML = `<div class="card-title">${sulaleAdi}</div><div class="card-subtitle">${kisiler.length} Kişi</div><div class="card-arrow">➔</div>`;
@@ -209,10 +217,18 @@
             kapsayici.innerHTML = '';
             const kisiler = hiyerarsi[boyAdi][sulaleAdi];
             kisiler.sort((a, b) => (a['AdSoyad'] || '').localeCompare(b['AdSoyad'] || ''));
+            
             kisiler.forEach(kisi => {
                 const kart = document.createElement('div');
                 kart.className = 'card';
-                kart.innerHTML = `<div class="card-title" style="font-size:1.2rem; color: var(--text-main);">${kisi['AdSoyad'] || 'İsimsiz'}</div><div class="card-subtitle">Baba: ${kisi['BabaID'] || kisi['BabaAdi'] || '-'}</div><div class="card-subtitle">Doğum: ${kisi['DogumYili'] || '-'}</div><div class="card-arrow">➔</div>`;
+                const baba = kisi['BabaAdi'] ? `<div class="card-subtitle">Baba: ${kisi['BabaAdi']}</div>` : '';
+                
+                // Liste kartında doğum-ölüm yılını göster
+                let yilText = kisi['DogumYili'] || '';
+                if (kisi['OlumYili']) { yilText += ` - ${kisi['OlumYili']}`; }
+                const yilHtml = yilText ? `<div class="card-subtitle">${yilText}</div>` : '';
+                
+                kart.innerHTML = `<div class="card-title" style="font-size:1.2rem; color: var(--text-main);">${kisi['AdSoyad'] || 'İsimsiz'}</div>${baba}${yilHtml}<div class="card-arrow">➔</div>`;
                 kart.onclick = () => modalAc(kisi);
                 kapsayici.appendChild(kart);
             });
@@ -226,80 +242,129 @@
             window.scrollTo(0, 0);
         }
 
-        // --- AKILLI İSİM EŞLEŞTİRME MANTIĞI ---
+        // --- AKILLI AKRABALIK VE SOY AĞACI MOTORU ---
         function modalAc(kisi) {
             document.getElementById('modalIsim').innerText = kisi['AdSoyad'] || 'İsimsiz';
-            document.getElementById('modalSulale').innerText = `${kisi['Boy'] || '-'} / ${kisi['Sülale'] || '-'}`;
-            document.getElementById('modalYil').innerText = kisi['DogumYili'] || '-';
-            document.getElementById('modalHikaye').innerText = kisi['Hikaye'] || kisi['Bilgi'] || 'Henüz hikaye eklenmemiş.';
+            document.getElementById('modalSulale').innerText = `${kisi['Boy'] || 'Diğer'} / ${kisi['Sülale'] || '-'}`;
             
-            // Tablodaki "Akrabalik" sütununu göster
-            const ekstra = kisi['Akrabalik'] || kisi['AkrabalikNotu'];
-            document.getElementById('modalEkstraAkrabalik').innerText = ekstra ? ekstra : 'Özel bir not girilmemiş.';
+            // Yaşam Süresi Mantığı (Doğum ve Ölüm Yılı)
+            let yasamSuresi = "-";
+            if (kisi['DogumYili'] && kisi['OlumYili']) {
+                yasamSuresi = `${kisi['DogumYili']} - ${kisi['OlumYili']}`;
+            } else if (kisi['DogumYili']) {
+                yasamSuresi = `${kisi['DogumYili']} (Doğum)`;
+            } else if (kisi['OlumYili']) {
+                yasamSuresi = `Ölüm: ${kisi['OlumYili']}`;
+            }
+            document.getElementById('modalYil').innerText = yasamSuresi;
+            
+            // Hikaye Kontrolü
+            const hikaye = kisi['Hikaye'] || kisi['Bilgi'];
+            if (hikaye) {
+                document.getElementById('modalHikaye').innerText = hikaye;
+                document.getElementById('hikayeAlani').style.display = 'block';
+            } else {
+                document.getElementById('hikayeAlani').style.display = 'none';
+            }
+
+            // Özel Akrabalık Kontrolü
+            const ozelAkraba = kisi['OzelAkrabalik'] || kisi['Akrabalik'];
+            if (ozelAkraba) {
+                document.getElementById('modalOzelAkrabalik').innerText = ozelAkraba;
+                document.getElementById('ozelAkrabalikAlani').style.display = 'block';
+            } else {
+                document.getElementById('ozelAkrabalikAlani').style.display = 'none';
+            }
 
             const soyAgaciAlani = document.getElementById('soyAgaciAlani');
             soyAgaciAlani.innerHTML = '';
 
             const kisiAdi = (kisi['AdSoyad'] || '').trim();
+            const kisiIlkAdi = kisiAdi.split(' ')[0].toLowerCase(); 
             const kisiSulale = (kisi['Sülale'] || '').trim().toLowerCase();
-            const babaAdi = (kisi['BabaID'] || kisi['BabaAdi'] || '').trim().toLowerCase(); // Hem BabaID hem BabaAdi sütununa bakar
+            const babaAdi = (kisi['BabaAdi'] || '').trim().toLowerCase();
+            const anneAdi = (kisi['AnneAdi'] || '').trim().toLowerCase();
+            const anneSulalesi = (kisi['AnneSulalesi'] || '').trim().toLowerCase();
 
-            // 1. BABAYI BUL (Aynı sülalede, adı baba adıyla eşleşen biri var mı?)
+            let agacHtml = '';
+
+            // 1. EBEVEYNLERİ BUL
+            let ebeveynHtml = `<div class="tree-title">Yukarı Soy (Ebeveynler)</div><ul class="tree-list">`;
+            let ebeveynVar = false;
+
             if (babaAdi !== "") {
                 const baba = tumVeriler.find(k => {
                     const kAd = (k['AdSoyad'] || '').toLowerCase();
                     const kSulale = (k['Sülale'] || '').toLowerCase();
-                    // İsmin içinde baba adı geçiyor mu? VE Aynı sülalede mi?
                     return kAd.includes(babaAdi) && kSulale === kisiSulale && k !== kisi;
                 });
-
                 if (baba) {
-                    soyAgaciAlani.innerHTML += `
-                        <div class="tree-title">Yukarı Soy (Atalar)</div>
-                        <ul class="tree-list">
-                            <li>Babası: <span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${baba['AdSoyad']}' && k['Sülale'].toLowerCase() === '${kisiSulale}')))">${baba['AdSoyad']}</span></li>
-                        </ul>
-                    `;
+                    ebeveynHtml += `<li>Babası: <span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${baba['AdSoyad']}')))">${baba['AdSoyad']}</span></li>`;
+                } else {
+                     ebeveynHtml += `<li>Babası: ${kisi['BabaAdi']} (Kayıtlı değil)</li>`;
                 }
+                ebeveynVar = true;
             }
 
-            // 2. ÇOCUKLARI BUL (Tabloda Baba adı kısmına, bu kişinin adı yazılmış olanlar)
-            const ilkAdi = kisiAdi.split(' ')[0].toLowerCase(); // Berk Sever ise "berk" alır
+            if (anneAdi !== "") {
+                const anne = tumVeriler.find(k => {
+                    const kAd = (k['AdSoyad'] || '').toLowerCase();
+                    const kSulale = (k['Sülale'] || '').toLowerCase();
+                    const arananSulale = anneSulalesi !== "" ? anneSulalesi : kisiSulale;
+                    return kAd.includes(anneAdi) && kSulale === arananSulale && k !== kisi;
+                });
+                if (anne) {
+                    ebeveynHtml += `<li>Annesi: <span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${anne['AdSoyad']}')))">${anne['AdSoyad']}</span></li>`;
+                } else {
+                     ebeveynHtml += `<li>Annesi: ${kisi['AnneAdi']} (Kayıtlı değil)</li>`;
+                }
+                ebeveynVar = true;
+            }
+            ebeveynHtml += `</ul>`;
+            if(ebeveynVar) agacHtml += ebeveynHtml;
+
+            // 2. ÇOCUKLARI BUL
             const cocuklar = tumVeriler.filter(k => {
-                const kBabaAd = (k['BabaID'] || k['BabaAdi'] || '').trim().toLowerCase();
-                const kSulale = (k['Sülale'] || '').toLowerCase();
-                return kBabaAd === ilkAdi && kSulale === kisiSulale && k !== kisi;
+                const kBabaAd = (k['BabaAdi'] || '').trim().toLowerCase();
+                const kAnneAd = (k['AnneAdi'] || '').trim().toLowerCase();
+                return (kBabaAd === kisiIlkAdi || kAnneAd === kisiIlkAdi) && k !== kisi;
             });
 
             if (cocuklar.length > 0) {
                 let cocukHtml = `<div class="tree-title">Aşağı Soy (Evlatlar)</div><ul class="tree-list">`;
                 cocuklar.forEach(cocuk => {
-                    cocukHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${cocuk['AdSoyad']}' && k['Sülale'].toLowerCase() === '${kisiSulale}')))">${cocuk['AdSoyad']}</span></li>`;
+                    cocukHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${cocuk['AdSoyad']}')))">${cocuk['AdSoyad']}</span></li>`;
                 });
                 cocukHtml += `</ul>`;
-                soyAgaciAlani.innerHTML += cocukHtml;
+                agacHtml += cocukHtml;
             }
 
-            // 3. KARDEŞLERİ BUL (Baba adı aynı olanlar)
-            if (babaAdi !== "") {
+            // 3. KARDEŞLERİ BUL
+            if (babaAdi !== "" || anneAdi !== "") {
                 const kardesler = tumVeriler.filter(k => {
-                    const kBabaAd = (k['BabaID'] || k['BabaAdi'] || '').trim().toLowerCase();
-                    const kSulale = (k['Sülale'] || '').toLowerCase();
-                    return kBabaAd === babaAdi && kSulale === kisiSulale && k !== kisi;
+                    const kBabaAd = (k['BabaAdi'] || '').trim().toLowerCase();
+                    const kAnneAd = (k['AnneAdi'] || '').trim().toLowerCase();
+                    
+                    const ayniBaba = babaAdi !== "" && kBabaAd === babaAdi;
+                    const ayniAnne = anneAdi !== "" && kAnneAd === anneAdi;
+                    
+                    return (ayniBaba || ayniAnne) && k !== kisi;
                 });
                 
                 if (kardesler.length > 0) {
                     let kardesHtml = `<div class="tree-title">Kardeşleri</div><ul class="tree-list">`;
                     kardesler.forEach(kardes => {
-                        kardesHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${kardes['AdSoyad']}' && k['Sülale'].toLowerCase() === '${kisiSulale}')))">${kardes['AdSoyad']}</span></li>`;
+                        kardesHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler.find(k => k['AdSoyad'] === '${kardes['AdSoyad']}')))">${kardes['AdSoyad']}</span></li>`;
                     });
                     kardesHtml += `</ul>`;
-                    soyAgaciAlani.innerHTML += kardesHtml;
+                    agacHtml += kardesHtml;
                 }
             }
 
-            if (soyAgaciAlani.innerHTML === '') {
+            if (agacHtml === '') {
                 soyAgaciAlani.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">Bu kişinin akrabaları tabloda henüz bulunamadı.</p>';
+            } else {
+                soyAgaciAlani.innerHTML = agacHtml;
             }
 
             document.getElementById('detayModal').classList.add('active');
