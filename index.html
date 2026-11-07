@@ -3,489 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Köy Tarihi</title>
+    <title>Maksudiye Köyü | Tarih ve Sülaleler</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-dark: #0f1c15;
-            --bg-card: #14261c;
-            --gold: #d8b15b;
-            --gold-hover: #c49d46;
-            --gold-text: #2b1f0f;
-            --text-main: #f0ece1;
-            --text-muted: #9bae9c;
-            --border-color: #2c4636;
+            --bg-color: #0f1714;
+            --panel-bg: #1a2823;
+            --gold: #d4af37;
+            --gold-hover: #f1c40f;
+            --text-main: #e0e0e0;
+            --text-muted: #9ba8a3;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
         }
 
-        /* --- Navbar --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
-            background-color: #0b1510;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-bottom: 2px solid var(--gold);
+            background: linear-gradient(rgba(15, 23, 20, 0.8), rgba(15, 23, 20, 0.95));
         }
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .nav-logo-icon {
-            width: 28px;
-            height: 28px;
-            background-color: var(--gold);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-text);
-            font-weight: bold;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text-main);
-        }
-
-        .nav-links a.active {
-            background-color: rgba(216, 177, 91, 0.15);
-            padding: 6px 16px;
-            border-radius: 20px;
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
             color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
-        .nav-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: #ccc;
-            background-image: url('https://ui-avatars.com/api/?name=Berk&background=random');
-            background-size: cover;
+        header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-style: italic;
         }
 
-        /* --- Container --- */
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 30px 20px;
+            padding: 40px 20px;
         }
 
-        /* --- Hero Banner --- */
-        .hero {
-            background-color: var(--gold);
-            border-radius: 16px;
-            padding: 50px 40px;
-            position: relative;
-            overflow: hidden;
-            color: var(--gold-text);
-            margin-bottom: 30px;
-        }
-
-        /* Sağ üstteki hafif daire deseni */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 300px;
-            height: 300px;
-            border: 40px solid rgba(255,255,255,0.15);
-            border-radius: 50%;
-            pointer-events: none;
-        }
+        /* --- Sekmeler (Sayfa Geçişleri) --- */
+        .page-section { display: none; animation: fadeIn 0.4s ease; }
+        .page-section.active { display: block; }
         
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            left: 10%;
-            width: 150px;
-            height: 150px;
-            border: 20px solid rgba(0,0,0,0.05);
-            border-radius: 50%;
-            pointer-events: none;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero h4 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            font-weight: 600;
-            color: #5c471a;
-        }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.2rem;
-            margin-bottom: 20px;
-            line-height: 1.1;
-            color: #2b1f0f;
-        }
-
-        .hero p {
-            font-size: 1.05rem;
-            max-width: 700px;
-            margin-bottom: 30px;
-            color: #4a3b1f;
-            line-height: 1.6;
-        }
-
-        .hero-btn {
-            display: inline-flex;
-            align-items: center;
-            background-color: #14261c;
-            color: #fff;
-            padding: 12px 24px;
+        /* --- Ana Sayfa: Hikaye & İstatistik --- */
+        .history-box {
+            background-color: var(--panel-bg);
+            border-left: 5px solid var(--gold);
             border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.2s;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
         }
 
-        .hero-btn:hover {
-            background-color: #0b1510;
+        .history-box h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 1.6rem;
         }
 
-        /* --- İstatistikler --- */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        .stats-row {
+            display: flex;
             gap: 20px;
             margin-bottom: 40px;
+            flex-wrap: wrap;
         }
 
-        .stat-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px 25px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+        .stat-box {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--panel-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
         }
 
-        .stat-title {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
+        .stat-box h3 { font-size: 1rem; color: var(--text-muted); font-weight: 400; margin-bottom: 10px; }
+        .stat-box .number { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold); line-height: 1; }
 
-        .stat-value {
-            font-size: 2.5rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            line-height: 1;
-        }
-
-        .stat-icon {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            color: var(--text-muted);
-        }
-
-        /* --- Sülale Listesi --- */
-        .section-header {
-            margin-bottom: 20px;
-        }
-
-        .section-header h2 {
-            font-family: 'Playfair Display', serif;
+        /* --- Izgara Yapısı --- */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
             font-size: 1.8rem;
-            color: var(--text-main);
-            margin-bottom: 5px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
         }
 
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .family-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
-        .family-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+        /* --- Kart Tasarımı (Hem Sülale Hem Kişi İçin) --- */
+        .card {
+            background-color: var(--panel-bg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
             padding: 20px;
             cursor: pointer;
-            transition: border-color 0.3s, transform 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .family-card:hover {
+        .card:hover {
+            transform: translateY(-5px);
             border-color: var(--gold);
-            transform: translateY(-3px);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
         .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .card-branch {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .arrow-icon {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
             color: var(--gold);
+            margin-bottom: 10px;
+            text-transform: capitalize;
         }
 
-        /* --- Modal (Detay Penceresi) --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            z-index: 1000;
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-content {
-            background-color: var(--bg-card);
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid var(--gold);
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .close-btn {
+        
+        .card-arrow {
             position: absolute;
-            top: 15px; right: 20px;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        .modal-content h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
+            bottom: 20px;
+            right: 20px;
             color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* --- Geri Butonu --- */
+        .back-btn {
+            display: inline-block;
             margin-bottom: 20px;
-        }
-
-        .modal-info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .modal-info-item strong {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .modal-info-item span {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
             font-size: 1rem;
+            transition: 0.2s;
+        }
+        .back-btn:hover { color: #fff; }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content {
+            background-color: var(--panel-bg); width: 90%; max-width: 500px;
+            padding: 30px; border-radius: 12px; border: 1px solid var(--gold);
+            position: relative; transform: translateY(20px); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: var(--text-muted); cursor: pointer; }
+        .close-btn:hover { color: var(--gold); }
+
+        .modal-content h2 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 20px; font-size: 1.8rem; }
+
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .modal-item strong { color: var(--text-muted); display: block; font-size: 0.8rem; text-transform: uppercase; }
+        .modal-item span { font-size: 1.05rem; font-weight: 600; }
+
+        .modal-story {
+            background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold);
+            padding: 15px; border-radius: 0 6px 6px 0; font-style: italic; color: #dcdcdc;
         }
 
-        .modal-notes {
-            background-color: rgba(216, 177, 91, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            border-left: 3px solid var(--gold);
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            .hero { padding: 30px 20px; }
-            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
-            .nav-links { display: none; }
-            .modal-info-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            .modal-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigasyon -->
-    <nav>
-        <div class="nav-logo">
-            <div class="nav-logo-icon">K</div>
-            Köy Tarihi
-        </div>
-        <div class="nav-links">
-            <a href="#" class="active">Ana Sayfa</a>
-            <a href="#sülaleler">Kişiler</a>
-        </div>
-        <div class="nav-avatar"></div>
-    </nav>
+    <header>
+        <h1>Maksudiye Köyü</h1>
+        <p>1864'ten Bugüne Sülalelerimiz ve Hikayelerimiz</p>
+    </header>
 
     <div class="container">
-        <!-- Banner (Hero) -->
-        <div class="hero">
-            <h4>Köy Tarihi</h4>
-            <h1>Köy, insanlarını hatırlar</h1>
-            <p>1864'te, Rus işgalinin ardından Çerkes aileleri yurtlarını terk etmek zorunda kaldı. Birçoğu kalabalık gemilerle Karadeniz'in öte yakasına taşındı ve atalarının topraklarından uzakta yeniden yerleşti. Bu kayıtlar, o sürgünden bugüne köyü ayakta tutan insanların adlarını, sülalelerini ve hikâyelerini saklar.</p>
-            <a href="#sülaleler" class="hero-btn">
-                <svg style="width:16px; height:16px; margin-right:8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                Kişilere göz at
-            </a>
+        
+        <!-- 1. ANA SAYFA (Sülaleler ve Özet) -->
+        <div id="ana-sayfa" class="page-section active">
+            <div class="history-box">
+                <h2>Köyün Hafızası</h2>
+                <p>1864 yılında Kafkasya'dan zorunlu göçle ayrılan atalarımız, Karadeniz'in öte yakasında yeni bir hayat kurdu. Bu dijital arşiv; dedelerimizin isimlerini, kökenlerini ve köyümüzün ortak hafızasını gelecek nesillere aktarmak için hazırlandı.</p>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h3>Kayıtlı Kişi</h3>
+                    <div class="number" id="stat-kisi">0</div>
+                </div>
+                <div class="stat-box">
+                    <h3>Sülale</h3>
+                    <div class="number" id="stat-sulale">0</div>
+                </div>
+                <div class="stat-box">
+                    <h3>Boy</h3>
+                    <div class="number" id="stat-boy">0</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Köyün Sülaleleri</h2>
+            <div id="sulale-listesi" class="grid">
+                <!-- Sülale kartları buraya gelecek -->
+            </div>
         </div>
 
-        <!-- İstatistikler -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-title">Kayıtlı Kişiler</div>
-                <div class="stat-value" id="stat-kisi">0</div>
-                <svg class="stat-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Sülaleler</div>
-                <div class="stat-value" id="stat-sulale">0</div>
-                <svg class="stat-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Boylar</div>
-                <div class="stat-value" id="stat-boy">0</div>
-                <svg class="stat-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+        <!-- 2. SÜLALE İÇİ SAYFASI (Kişiler) -->
+        <div id="sulale-sayfasi" class="page-section">
+            <a class="back-btn" onclick="sayfaDegistir('ana-sayfa')">← Ana Sayfaya Dön</a>
+            <h2 class="section-title" id="secilen-sulale-baslik">Sülale Adı</h2>
+            <div id="kisi-listesi" class="grid">
+                <!-- O sülaleye ait kişiler buraya gelecek -->
             </div>
         </div>
 
-        <!-- Sülale Listesi -->
-        <div class="section-header" id="sülaleler">
-            <h2>Köyün Sülaleleri</h2>
-            <p>Üyelerini görmek için bir sülale seçin.</p>
-        </div>
-
-        <div id="koyVerisi" class="family-grid">
-            <!-- Kartlar buraya gelecek -->
-        </div>
     </div>
 
-    <!-- Detay Penceresi -->
+    <!-- Kişi Detay Penceresi -->
     <div class="modal-overlay" id="detayModal">
         <div class="modal-content">
             <span class="close-btn" onclick="kapatModal()">&times;</span>
-            <h3 id="modalIsim">İsim</h3>
-            
-            <div class="modal-info-grid">
-                <div class="modal-info-item">
-                    <strong>Sülale</strong>
-                    <span id="modalSulale">-</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>Boy</strong>
-                    <span id="modalBoy">-</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>Baba Adı</strong>
-                    <span id="modalBaba">-</span>
-                </div>
-                <div class="modal-info-item">
-                    <strong>Doğum Yılı</strong>
-                    <span id="modalYil">-</span>
-                </div>
+            <h2 id="modalIsim">İsim</h2>
+            <div class="modal-grid">
+                <div class="modal-item"><strong>Sülale</strong> <span id="modalSulale">-</span></div>
+                <div class="modal-item"><strong>Boy</strong> <span id="modalBoy">-</span></div>
+                <div class="modal-item"><strong>Baba Adı</strong> <span id="modalBaba">-</span></div>
+                <div class="modal-item"><strong>Doğum Yılı</strong> <span id="modalYil">-</span></div>
+                <div class="modal-item"><strong>Doğum Yeri</strong> <span id="modalYer">-</span></div>
             </div>
-            
-            <div class="modal-notes" id="modalHikaye">
-                Hikaye yükleniyor...
-            </div>
+            <div class="modal-story" id="modalHikaye">Hikaye yükleniyor...</div>
         </div>
     </div>
 
     <script>
-        // SENİN GOOGLE SHEETS LİNKİN (Değiştirme)
         const CSV_URL = "https://docs.google.com/spreadsheets/d/104r7BF560IMgrIeFXH_l2f8L2LR3DrV3CuRx2uMXLXQ/export?format=csv";
+        let tumVeriler = [];
 
         function parseCSV(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line);
             if (lines.length === 0) return [];
-            
             const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
             const result = [];
-
             for (let i = 1; i < lines.length; i++) {
                 const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
-                let match;
-                const values = [];
+                let match, values = [];
                 while ((match = regex.exec(lines[i])) !== null) {
                     values.push(match[0].trim().replace(/^"|"$/g, ''));
                 }
-
                 if (values.length > 0) {
                     const obj = {};
-                    headers.forEach((header, index) => {
-                        obj[header] = values[index] || '';
-                    });
+                    headers.forEach((header, index) => { obj[header] = values[index] || ''; });
                     result.push(obj);
                 }
             }
@@ -495,89 +294,107 @@
         async function verileriYukle() {
             try {
                 const response = await fetch(CSV_URL);
-                if (!response.ok) throw new Error("Veri çekilemedi.");
-                
                 const csvText = await response.text();
-                const kayitlar = parseCSV(csvText);
+                tumVeriler = parseCSV(csvText);
                 
-                istatistikleriHesapla(kayitlar);
-                arayuzuOlustur(kayitlar);
+                istatistikleriHesapla();
+                sulaleleriListele();
             } catch (error) {
-                document.getElementById('koyVerisi').innerHTML = `
-                    <div style="text-align:center; width:100%; color:#ff6b6b;">
-                        <p>Veriler yüklenirken bir hata oluştu. Tablonun paylaşıma açık olduğundan emin olun.</p>
-                    </div>
-                `;
+                document.getElementById('sulale-listesi').innerHTML = "<p>Veriler yüklenirken hata oluştu. Tablonun paylaşıma açık olduğundan emin olun.</p>";
             }
         }
 
-        function istatistikleriHesapla(kayitlar) {
-            document.getElementById('stat-kisi').innerText = kayitlar.length;
+        function istatistikleriHesapla() {
+            document.getElementById('stat-kisi').innerText = tumVeriler.length;
             
-            // Sülale ve Boy sayılarını benzersiz olarak bulma
             const sulaleler = new Set();
             const boylar = new Set();
             
-            kayitlar.forEach(kisi => {
-                if(kisi['Sülale']) sulaleler.add(kisi['Sülale'].toLowerCase());
-                if(kisi['Boy']) boylar.add(kisi['Boy'].toLowerCase());
+            tumVeriler.forEach(kisi => {
+                if(kisi['Sülale'] && kisi['Sülale'].trim() !== '') sulaleler.add(kisi['Sülale'].toLowerCase());
+                if(kisi['Boy'] && kisi['Boy'].trim() !== '') boylar.add(kisi['Boy'].toLowerCase());
             });
 
             document.getElementById('stat-sulale').innerText = sulaleler.size;
             document.getElementById('stat-boy').innerText = boylar.size;
         }
 
-        function arayuzuOlustur(kayitlar) {
-            const kapsayici = document.getElementById('koyVerisi');
-            kapsayici.innerHTML = ''; 
+        // ANA SAYFA: Sülaleleri Gruplayarak Listele
+        function sulaleleriListele() {
+            const kapsayici = document.getElementById('sulale-listesi');
+            kapsayici.innerHTML = '';
 
-            if (kayitlar.length === 0) {
-                kapsayici.innerHTML = '<div style="width:100%; text-align:center; color: #9bae9c;">Henüz kayıt bulunmuyor.</div>';
-                return;
-            }
-
-            // İsme göre sırala
-            kayitlar.sort((a, b) => (a['AdSoyad'] || '').localeCompare(b['AdSoyad'] || ''));
-
-            kayitlar.forEach(kisi => {
-                const adSoyad = kisi['AdSoyad'] || 'İsimsiz';
-                const sulale = kisi['Sülale'] || '-';
-                const boy = kisi['Boy'] || '-';
-                const babaAdi = kisi['BabaAdi'] || '-';
-                const dogumYili = kisi['DogumYili'] || '-';
-                const hikaye = kisi['Hikaye'] || kisi['Bilgi'] || 'Henüz bir hikaye eklenmemiş.';
-
-                const kart = document.createElement('div');
-                kart.className = 'family-card';
+            // Sülalelere göre gruplama
+            const gruplar = {};
+            tumVeriler.forEach(kisi => {
+                let sulaleAdi = kisi['Sülale'] ? kisi['Sülale'].trim() : 'Bilinmeyen Sülale';
+                // İlk harfi büyüt
+                sulaleAdi = sulaleAdi.charAt(0).toUpperCase() + sulaleAdi.slice(1).toLowerCase();
                 
-                // İsmin baş harfi için ikon yapısı (Base44 tasarımına benzer)
-                const initial = adSoyad.charAt(0).toUpperCase();
-
-                kart.innerHTML = `
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">${adSoyad}</div>
-                            <div class="card-branch">${sulale} ${boy !== '-' ? '· ' + boy : ''}</div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span>Doğum: ${dogumYili}</span>
-                        <span class="arrow-icon">➔</span>
-                    </div>
-                `;
-                
-                kart.onclick = () => modalAc(adSoyad, sulale, boy, babaAdi, dogumYili, hikaye);
-                kapsayici.appendChild(kart);
+                if (!gruplar[sulaleAdi]) gruplar[sulaleAdi] = [];
+                gruplar[sulaleAdi].push(kisi);
             });
+
+            // Grupları ekrana bas
+            for (const [sulaleAdi, kisiler] of Object.entries(gruplar).sort()) {
+                const kart = document.createElement('div');
+                kart.className = 'card';
+                kart.innerHTML = `
+                    <div class="card-title">${sulaleAdi} Sülalesi</div>
+                    <div class="card-subtitle">${kisiler.length} Kayıtlı Kişi</div>
+                    <div class="card-arrow">➔</div>
+                `;
+                kart.onclick = () => sulaleDetayGoster(sulaleAdi, kisiler);
+                kapsayici.appendChild(kart);
+            }
         }
 
-        function modalAc(isim, sulale, boy, baba, yil, hikaye) {
-            document.getElementById('modalIsim').innerText = isim;
-            document.getElementById('modalSulale').innerText = sulale;
-            document.getElementById('modalBoy').innerText = boy;
-            document.getElementById('modalBaba').innerText = baba;
-            document.getElementById('modalYil').innerText = yil;
-            document.getElementById('modalHikaye').innerText = hikaye;
+        // SÜLALE SAYFASI: O sülaleye ait kişileri göster
+        function sulaleDetayGoster(sulaleAdi, kisiler) {
+            document.getElementById('secilen-sulale-baslik').innerText = sulaleAdi + " Sülalesi";
+            
+            const kapsayici = document.getElementById('kisi-listesi');
+            kapsayici.innerHTML = '';
+
+            // Kişileri isme göre sırala
+            kisiler.sort((a, b) => (a['AdSoyad'] || '').localeCompare(b['AdSoyad'] || ''));
+
+            kisiler.forEach(kisi => {
+                const adSoyad = kisi['AdSoyad'] || 'İsimsiz';
+                const boy = kisi['Boy'] || 'Boy Belirtilmemiş';
+                const dogumYili = kisi['DogumYili'] || '-';
+
+                const kart = document.createElement('div');
+                kart.className = 'card';
+                kart.innerHTML = `
+                    <div class="card-title" style="font-size:1.2rem;">${adSoyad}</div>
+                    <div class="card-subtitle">Boy: ${boy}</div>
+                    <div class="card-subtitle">Doğum: ${dogumYili}</div>
+                    <div class="card-arrow">➔</div>
+                `;
+                kart.onclick = () => modalAc(kisi);
+                kapsayici.appendChild(kart);
+            });
+
+            sayfaDegistir('sulale-sayfasi');
+        }
+
+        // Sayfa geçiş fonksiyonu
+        function sayfaDegistir(sayfaId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sayfaId).classList.add('active');
+            window.scrollTo(0, 0); // Sayfa başına dön
+        }
+
+        // Modal İşlemleri
+        function modalAc(kisi) {
+            document.getElementById('modalIsim').innerText = kisi['AdSoyad'] || 'İsimsiz';
+            document.getElementById('modalSulale').innerText = kisi['Sülale'] || '-';
+            document.getElementById('modalBoy').innerText = kisi['Boy'] || '-';
+            document.getElementById('modalBaba').innerText = kisi['BabaAdi'] || '-';
+            document.getElementById('modalYil').innerText = kisi['DogumYili'] || '-';
+            document.getElementById('modalYer').innerText = kisi['DogumYeri'] || '-';
+            document.getElementById('modalHikaye').innerText = kisi['Hikaye'] || kisi['Bilgi'] || 'Henüz bir hikaye eklenmemiş.';
             
             document.getElementById('detayModal').classList.add('active');
         }
