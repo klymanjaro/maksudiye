@@ -304,15 +304,8 @@
         }
         function rehberAc() { document.getElementById('rehberModal').classList.add('active'); }
 
-        // KİŞİ BULMA YARDIMCI FONKSİYONU (Hata payını sıfırlar)
-        function kisiBul(isim) {
-            if(!isim) return null;
-            const aranan = isim.trim().toLowerCase();
-            return tumVeriler.find(k => (k['AdSoyad'] || '').trim().toLowerCase() === aranan);
-        }
-
         function modalAc(kisi) {
-            if (!kisi) return; // Eğer kişi bulunamazsa hata vermesini engelle
+            if (!kisi) return;
 
             document.getElementById('modalIsim').innerText = kisi['AdSoyad'] || 'İsimsiz';
             document.getElementById('modalSulale').innerText = `${kisi['Boy'] || 'Diğer'} / ${kisi['Sülale'] || '-'}`;
@@ -364,8 +357,8 @@
                     return kAd.includes(babaAdi) && kSulale === kisiSulale && k !== kisi;
                 });
                 if (baba) {
-                    // Tıklama hatasını çözen düzeltilmiş kısım:
-                    ebeveynHtml += `<li>Babası: <span class="clickable-name" onclick="modalAc(kisiBul('${baba['AdSoyad'].replace(/'/g, "\\'")}'))">${baba['AdSoyad']}</span></li>`;
+                    const bIndex = tumVeriler.indexOf(baba);
+                    ebeveynHtml += `<li>Babası: <span class="clickable-name" onclick="modalAc(tumVeriler[${bIndex}])">${baba['AdSoyad']}</span></li>`;
                 } else {
                      ebeveynHtml += `<li>Babası: ${kisi['BabaAdi']} (Kayıtlı değil)</li>`;
                 }
@@ -380,7 +373,8 @@
                     return kAd.includes(anneAdi) && kSulale === arananSulale && k !== kisi;
                 });
                 if (anne) {
-                    ebeveynHtml += `<li>Annesi: <span class="clickable-name" onclick="modalAc(kisiBul('${anne['AdSoyad'].replace(/'/g, "\\'")}'))">${anne['AdSoyad']}</span></li>`;
+                    const aIndex = tumVeriler.indexOf(anne);
+                    ebeveynHtml += `<li>Annesi: <span class="clickable-name" onclick="modalAc(tumVeriler[${aIndex}])">${anne['AdSoyad']}</span></li>`;
                 } else {
                      ebeveynHtml += `<li>Annesi: ${kisi['AnneAdi']} (Kayıtlı değil)</li>`;
                 }
@@ -398,8 +392,8 @@
             if (cocuklar.length > 0) {
                 let cocukHtml = `<div class="tree-title">Aşağı Soy (Evlatlar)</div><ul class="tree-list">`;
                 cocuklar.forEach(cocuk => {
-                    // Tıklama hatasını çözen düzeltilmiş kısım:
-                    cocukHtml += `<li><span class="clickable-name" onclick="modalAc(kisiBul('${cocuk['AdSoyad'].replace(/'/g, "\\'")}'))">${cocuk['AdSoyad']}</span></li>`;
+                    const cIndex = tumVeriler.indexOf(cocuk);
+                    cocukHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler[${cIndex}])">${cocuk['AdSoyad']}</span></li>`;
                 });
                 cocukHtml += `</ul>`;
                 agacHtml += cocukHtml;
@@ -417,8 +411,8 @@
                 if (kardesler.length > 0) {
                     let kardesHtml = `<div class="tree-title">Kardeşleri</div><ul class="tree-list">`;
                     kardesler.forEach(kardes => {
-                        // Tıklama hatasını çözen düzeltilmiş kısım:
-                        kardesHtml += `<li><span class="clickable-name" onclick="modalAc(kisiBul('${kardes['AdSoyad'].replace(/'/g, "\\'")}'))">${kardes['AdSoyad']}</span></li>`;
+                        const kIndex = tumVeriler.indexOf(kardes);
+                        kardesHtml += `<li><span class="clickable-name" onclick="modalAc(tumVeriler[${kIndex}])">${kardes['AdSoyad']}</span></li>`;
                     });
                     kardesHtml += `</ul>`;
                     agacHtml += kardesHtml;
