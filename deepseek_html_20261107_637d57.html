@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çerkes Köyü Tarihi</title>
+    <style>
+        :root {
+            --dark-green: #1a3c34;
+            --gold: #c5a059;
+            --cream: #f5f0e1;
+            --text-light: #e8e8e8;
+            --text-dark: #2c2c2c;
+        }
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-green);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        header {
+            background-color: var(--dark-green);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+        }
+        h1 {
+            color: var(--gold);
+            font-size: 2.5em;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            color: var(--cream);
+            font-style: italic;
+            margin-top: 10px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .history-box {
+            background-color: rgba(197, 160, 89, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 50px;
+            color: var(--cream);
+        }
+        .history-box h2 {
+            color: var(--gold);
+            margin-top: 0;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 10px;
+        }
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .family-card {
+            background-color: var(--cream);
+            color: var(--text-dark);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+            border-top: 5px solid var(--gold);
+        }
+        .family-card:hover {
+            transform: translateY(-5px);
+        }
+        .family-card h3 {
+            margin-top: 0;
+            color: var(--dark-green);
+            font-size: 1.4em;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+        }
+        .family-card p {
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+        .notes {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            font-style: italic;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .loading {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--gold);
+            padding: 50px;
+        }
+        .error {
+            background-color: #ffcccc;
+            color: #cc0000;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em; }
+            .container { padding: 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Köy Tarihi</h1>
+        <div class="subtitle">1864'ten Bugüne Köyümüzün Sülaleleri ve Hikayeleri</div>
+    </header>
+
+    <div class="container">
+        <div class="history-box">
+            <h2>1864 Büyük Sürgün</h2>
+            <p>
+                1864 yılında, Rus işgali ardından Çerkes aileleri yurtlarını terk etmek zorunda kaldı. 
+                Birçoğu kalabalık gemilerle Karadeniz'in öte yakasına taşındı ve atalarının topraklarından uzakta 
+                yeniden yerleşti. Bu kayıtlar, o sürgünden bugüne köyü ayakta tutan insanların adlarını, 
+                sülalelerini ve hikayelerini saklar.
+            </p>
+        </div>
+
+        <h2 style="color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px;">Köyün Sülaleleri</h2>
+        
+        <div id="koyVerisi" class="family-grid">
+            <div class="loading">Veriler yükleniyor, lütfen bekleyin...</div>
+        </div>
+    </div>
+
+    <script>
+        // Google Sheets CSV Export Linkiniz
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/104r7BF560IMgrIeFXH_l2f8L2LR3DrV3CuRx2uMXLXQ/export?format=csv";
+
+        async function verileriYukle() {
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) throw new Error("Ağ hatası veya tablo erişilemez durumda.");
+                
+                const csvText = await response.text();
+                const satirlar = csvText.split('\n').map(satir => satir.trim()).filter(satir => satir);
+                
+                if (satirlar.length < 2) {
+                    document.getElementById('koyVerisi').innerHTML = '<div class="loading">Tabloda henüz veri bulunmuyor.</div>';
+                    return;
+                }
+
+                // Başlıkları al ve temizle
+                const basliklar = satirlar[0].split(',').map(b => b.trim().replace(/^"|"$/g, ''));
+                
+                const kayitlar = [];
+                for (let i = 1; i < satirlar.length; i++) {
+                    // Basit bir CSV ayrıştırma (tırnak içindeki virgülleri şimdilik göz ardı ediyoruz)
+                    const degerler = satirlar[i].split(',').map(d => d.trim().replace(/^"|"$/g, ''));
+                    const kayit = {};
+                    basliklar.forEach((baslik, index) => {
+                        kayit[baslik] = degerler[index] || '';
+                    });
+                    kayitlar.push(kayit);
+                }
+
+                arayuzuOlustur(kayitlar);
+
+            } catch (error) {
+                document.getElementById('koyVerisi').innerHTML = `
+                    <div class="error">
+                        Veriler yüklenirken bir hata oluştu. Lütfen tablonun "Bağlantıya sahip olan herkes" olarak paylaşıldığından emin olun.
+                    </div>
+                `;
+                console.error(error);
+            }
+        }
+
+        function arayuzuOlustur(kayitlar) {
+            const kapsayici = document.getElementById('koyVerisi');
+            kapsayici.innerHTML = ''; // Yükleniyor yazısını temizle
+
+            if (kayitlar.length === 0) {
+                kapsayici.innerHTML = '<div class="loading">Gösterilecek kayıt bulunamadı.</div>';
+                return;
+            }
+
+            kayitlar.forEach(kisi => {
+                // Sütun isimleri tablonuzdaki başlıklarla eşleşmeli
+                const adSoyad = kisi['AdSoyad'] || kisi['İsim'] || 'İsimsiz Kayıt';
+                const sulale = kisi['Sülale'] || '-';
+                const babaAdi = kisi['BabaAdi'] || '-';
+                const dogumYili = kisi['DogumYili'] || '-';
+                const dogumYeri = kisi['DogumYeri'] || '-';
+                const hikaye = kisi['Hikaye'] || kisi['Bilgi'] || 'Henüz bir hikaye eklenmemiş.';
+
+                const kart = document.createElement('div');
+                kart.className = 'family-card';
+                kart.innerHTML = `
+                    <h3>${adSoyad}</h3>
+                    <p><span class="label">Sülale:</span> ${sulale}</p>
+                    <p><span class="label">Baba Adı:</span> ${babaAdi}</p>
+                    <p><span class="label">Doğum Yılı:</span> ${dogumYili}</p>
+                    <p><span class="label">Doğum Yeri:</span> ${dogumYeri}</p>
+                    <div class="notes">${hikaye}</div>
+                `;
+                kapsayici.appendChild(kart);
+            });
+        }
+
+        // Sayfa yüklendiğinde verileri çek
+        window.onload = verileriYukle;
+    </script>
+</body>
+</html>
